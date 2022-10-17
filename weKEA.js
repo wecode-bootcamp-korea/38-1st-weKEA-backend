@@ -4,16 +4,14 @@ const express = require('express');
 const cors    = require('cors');
 const morgan  = require('morgan');
 
-const route  = require('./api/routes');
-// const { weKEADataSource } = require('./api/utils/auth');
+const routes  = require('./api/routes');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
-app.use(route);
-// app.use(weKEADataSource);
+app.use(routes);
 
 app.get('/ping', (req, res) => {
     res.status(200).json({ message : 'pong'}); 
@@ -21,6 +19,13 @@ app.get('/ping', (req, res) => {
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
-    console.log(`Listening to request on 127.0.0.1:${PORT}`);
-})
+const startServer = async () => {
+    try {
+        app.listen(PORT, () => 
+        console.log(`server is listening on ${PORT}`))
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+startServer();
