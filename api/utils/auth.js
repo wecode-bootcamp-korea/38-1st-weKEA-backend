@@ -3,7 +3,6 @@ const { promisify } = require('util');
 const { userService } = require('../services');
 
 const loginRequired = async(req, res, next) => {
-    // 1. 토큰이 req.headers에 있는지 확인하기
     const accessToken = req.headers.authorization;
 
     if(!accessToken) {
@@ -12,10 +11,8 @@ const loginRequired = async(req, res, next) => {
         return res.status(err.statusCode).json({message: error.message});
     }
 
-    // 2. 토큰 검증하기
-    const decoded = promisify(jwt.verify)(accessToken, process.env.JWT_SECRET); // jwt가 가지고 있던 payload값이 decoded에 할당됨
+    const decoded = promisify(jwt.verify)(accessToken, process.env.JWT_SECRET);
 
-    // 3. 해당 유저가 db에 있니? (userDao)
     const user = await userService.getUserById(decoded.id);
 
     if(!user) {
@@ -24,7 +21,6 @@ const loginRequired = async(req, res, next) => {
         return res.status(err.statusCode).json({message: error.message});
     }
 
-    // 4. GRANT ACCESS
     req.user = user;
 
     next();

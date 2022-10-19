@@ -27,7 +27,6 @@ const signIn = async(req, res) => {
             throw error
         }
 
-        // 해당 유저가 db에 있으면 jwt 토큰을 반환한다
         const accessToken = await userService.signIn(email, password);
         res.status(200).json({accessToken});
 
