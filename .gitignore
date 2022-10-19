@@ -1,6 +1,9 @@
 ### dotenv ###
 .env
 
+### schema.sql ###
+db/schema.sql
+
 ### Node ###
 # Logs
 logs
