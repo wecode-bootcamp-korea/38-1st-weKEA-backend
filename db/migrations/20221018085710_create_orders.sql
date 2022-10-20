@@ -7,7 +7,7 @@ CREATE TABLE orders(
      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
      updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
      FOREIGN KEY (user_id) REFERENCES users(id),
-     FOREIGN KEY (product_option_id) REFERENCES product_options(id)
+     FOREIGN KEY (product_option_id) REFERENCES product_options(id),
      FOREIGN KEY (order_status_id) REFERENCES order_status(id)
 );
 

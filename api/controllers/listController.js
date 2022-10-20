@@ -1,16 +1,17 @@
-const { listService } = require('../controllers');
+const { listService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const listInfo = catchAsync(async (req, res) => {
     const categoryId = req.params.categoryId;
     if(!categoryId) {
         const error = new Error('CATEGORY_ID_IS_NOT_VALID');
-        error.statusCode = 400; // http status Code가 이게 맞나?
+        error.statusCode = 400;
 
-        throw error 
+        console.log(error);
+        throw error
     }
-    const getProductsByCategoryId = await listService.listInfo(categoryId);
-    res.status(200).json({getProductsByCategoryId});
+    const productsByCategory = await listService.listService(categoryId);
+    res.status(200).json({productsByCategory});
 });
 
 module.exports = {
