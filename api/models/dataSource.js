@@ -9,7 +9,7 @@ const weKEADataSource = new DataSource({
     database: process.env.TYPEORM_DATABASE
 });
 
-const init = async() => {
+const weKEADSinit = async() => {
     await weKEADataSource.initialize()
     .then(() => {
         console.log("Data Source has been initialized");
@@ -20,6 +20,6 @@ const init = async() => {
     });
 }
 
-init();
+weKEADSinit();
 
 module.exports = { weKEADataSource }
