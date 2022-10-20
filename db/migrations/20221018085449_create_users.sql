@@ -5,7 +5,7 @@ CREATE TABLE users(
   first_name VARCHAR(50) NOT NULL,
   birthday DATE NOT NULL,
   phone_number VARCHAR(30) NOT NULL,
-  email VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
   point DECIMAL(15, 3),
   password VARCHAR(200) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

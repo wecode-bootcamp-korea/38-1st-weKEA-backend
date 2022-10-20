@@ -5,8 +5,8 @@ CREATE TABLE carts(
      product_option_id INT NOT NULL,
      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
      updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
-     FOREIGN KEY (user_id) REFERENCES users(id),
-     FOREIGN KEY (product_option_id) REFERENCES product_options(id)
+     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+     FOREIGN KEY (product_option_id) REFERENCES product_options(id) ON DELETE CASCADE
 );
 
 -- migrate:down
