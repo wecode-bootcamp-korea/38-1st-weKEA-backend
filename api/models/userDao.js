@@ -14,6 +14,7 @@ const getUserById = async(id) => {
         [id]
     )
     return result[0]
+    
 };
 
 const createUser = async(last_name, first_name, birthday, phone_number, point, email, password) => {
@@ -37,6 +38,8 @@ const getUserByEmail = async(email) => {
     const result = await weKEADataSource.query(`
         SELECT
             id,
+            last_name,
+            first_name,
             password
         FROM users
         WHERE email=?;`,

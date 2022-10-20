@@ -51,6 +51,8 @@ const signIn = async(email, password) => {
 
     const user = await userDao.getUserByEmail(email);
 
+    // console.log('여기다', user);
+
     if(!user) {
         const error = new Error('WRONG_EMAIL')
     }
@@ -66,7 +68,13 @@ const signIn = async(email, password) => {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 
-    return accessToken;
+    const userInfo = {};
+    userInfo['accessToken'] = accessToken;
+    userInfo['userName'] = {};
+    userInfo.userName['first_name'] = user.first_name;
+    userInfo.userName['last_name'] = user.last_name;
+
+    return userInfo;
 };
 
 module.exports = {

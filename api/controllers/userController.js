@@ -26,8 +26,8 @@ const signIn = async(req, res) => {
             throw error
         }
 
-        const accessToken = await userService.signIn(email, password);
-        res.status(200).json({accessToken});
+        const userInfo = await userService.signIn(email, password);
+        res.status(200).json({userInfo});
 
     } catch (error) {
         console.log(error);
