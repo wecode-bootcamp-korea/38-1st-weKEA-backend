@@ -50,9 +50,7 @@ const signIn = async(email, password) => {
     }
 
     const user = await userDao.getUserByEmail(email);
-
-    // console.log('여기다', user);
-
+    
     if(!user) {
         const error = new Error('WRONG_EMAIL')
     }
