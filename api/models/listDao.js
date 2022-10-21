@@ -32,7 +32,7 @@ const productInfo = async (categoryId) => {
     );
 
     for (let i=0; i < products.length; i++) {
-        products[i]['hoverImage']=images[0]['image_url'];
+        products[i]['productHoverImage']=images[0]['image_url'];
         products[i]['productPrice'] = options[0]['price'];
     }
 
