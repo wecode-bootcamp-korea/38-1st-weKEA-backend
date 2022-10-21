@@ -35,9 +35,11 @@ const listInfo = async (categoryId) => {
         [categoryId]
     );
 
-    product[0]['hoverImage']=images[0]['image_url'];
-    product[0]['options'] = options[0];
-    return product[0];
+    for (let i=0; i < product.length; i++) {
+        product[i]['hoverImage']=images[0]['image_url'];
+        product[i]['options'] = options[0];
+    }
+    return product;
 };
 
 module.exports = {
