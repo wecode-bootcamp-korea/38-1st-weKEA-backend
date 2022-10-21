@@ -13,7 +13,7 @@ const hashPassword = async(plainPassword) => {
     return await bcrypt.hash(plainPassword, salt);
 }
 
-const signUp = async(last_name, first_name, birthday, phone_number, point, email, password) => {
+const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
     const emailRegex    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
 	const pwRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
@@ -30,7 +30,7 @@ const signUp = async(last_name, first_name, birthday, phone_number, point, email
     }
 
     const hashedPassword =  await hashPassword(password);
-    return await userDao.createUser(last_name, first_name, birthday, phone_number, point, email, hashedPassword);
+    return await userDao.createUser(lastName, firstName, birthday, phoneNumber, point, email, hashedPassword);
 }
 
 const signIn = async(email, password) => {
@@ -69,8 +69,8 @@ const signIn = async(email, password) => {
     const userInfo = {};
     userInfo['accessToken'] = accessToken;
     userInfo['userName'] = {};
-    userInfo.userName['first_name'] = user.first_name;
-    userInfo.userName['last_name'] = user.last_name;
+    userInfo.userName['firstName'] = user.firstName;
+    userInfo.userName['lastName'] = user.lastName;
 
     return userInfo;
 };

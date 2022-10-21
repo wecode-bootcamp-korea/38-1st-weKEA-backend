@@ -4,10 +4,10 @@ const getUserById = async(id) => {
     const result = await weKEADataSource.query(`
         SELECT
             id,
-            last_name,
-            first_name,
+            last_name AS lastName,
+            first_name AS firstName,
             birthday,
-            phone_number,
+            phone_number AS phoneNumber,
             email
         FROM users
         WHERE id=?;`,
@@ -17,7 +17,7 @@ const getUserById = async(id) => {
     
 };
 
-const createUser = async(last_name, first_name, birthday, phone_number, point, email, password) => {
+const createUser = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
     const result = await weKEADataSource.query(`
         INSERT INTO users (
             last_name,
@@ -29,7 +29,7 @@ const createUser = async(last_name, first_name, birthday, phone_number, point, e
             password
         )
         VALUES(?, ?, ?, ?, ?, ?, ?);`,
-        [last_name, first_name, birthday, phone_number, point, email, password]
+        [lastName, firstName, birthday, phoneNumber, point, email, password]
     )
     return result.insertId
 };
@@ -38,8 +38,8 @@ const getUserByEmail = async(email) => {
     const result = await weKEADataSource.query(`
         SELECT
             id,
-            last_name,
-            first_name,
+            last_name AS lastName,
+            first_name AS firstName,
             password
         FROM users
         WHERE email=?;`,
