@@ -5,7 +5,6 @@ const cors    = require('cors');
 const morgan  = require('morgan');
 
 const routes  = require('./api/routes');
-const { RelationIdAttribute } = require('typeorm/query-builder/relation-id/RelationIdAttribute');
 
 const app = express();
 
