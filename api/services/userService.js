@@ -35,7 +35,7 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
 
 const signIn = async(email, password) => {
     const EMAILREGEX    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
-	const PWREGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+    const PWREGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
     if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
