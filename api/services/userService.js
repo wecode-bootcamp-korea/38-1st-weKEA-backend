@@ -14,16 +14,16 @@ const hashPassword = async(plainPassword) => {
 }
 
 const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
-    const emailRegex    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
-	const pwRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+    const EMAILREGEX    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+    const PWREGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
-    if(!emailRegex.test(email)) {
+    if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
         error.statusCode = 400;
         throw error
     }
 
-    if(!pwRegex.test(password)) {
+    if(!PWREGEX.test(password)) {
         const error = new Error('INVALID_PASSWORD');
         error.statusCode = 400;
         throw error
@@ -34,16 +34,16 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
 }
 
 const signIn = async(email, password) => {
-    const emailRegex    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
-	const pwRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+    const EMAILREGEX    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+	const PWREGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
-    if(!emailRegex.test(email)) {
+    if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
         error.statusCode = 400;
         throw error
     }
 
-    if(!pwRegex.test(password)) {
+    if(!PWREGEX.test(password)) {
         const error = new Error('INVALID_PASSWORD');
         error.statusCode = 400;
         throw error
