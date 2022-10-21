@@ -1,13 +1,11 @@
 const { weKEADataSource } = require('./dataSource');
 
 // data 요청사항 @list-page
-const listInfo = async (categoryId) => {
-    const product = await weKEADataSource.query(`
+const productInfo = async (categoryId) => {
+    const products = await weKEADataSource.query(`
         SELECT
             p.name As productName,
-            p.thumbnail As productThumbNail,
-            p.category_id As categoryId,
-            c.name AS categoryName,
+            p.thumbnail AS productThumbNail,
             p.created_at AS productCreatedAt
         FROM products p
         INNER JOIN categories c ON p.category_id=c.id
@@ -26,20 +24,40 @@ const listInfo = async (categoryId) => {
 
     const options = await weKEADataSource.query(`
         SELECT
-            o.size,
-            o.price,
-            o.color
+            o.price
         FROM product_options o
         INNER JOIN products p ON o.product_id=p.id
         WHERE p.category_id=?;`,
         [categoryId]
     );
 
-    for (let i=0; i < product.length; i++) {
-        product[i]['hoverImage']=images[0]['image_url'];
-        product[i]['options'] = options[0];
+    for (let i=0; i < products.length; i++) {
+        products[i]['hoverImage']=images[0]['image_url'];
+        products[i]['productPrice'] = options[0]['price'];
     }
-    return product;
+
+    return products;
+};
+
+const categoryInfo = async(categoryId) => {
+    const category = await weKEADataSource.query(`
+        SELECT
+            p.category_id AS categoryId,
+            c.name AS categoryName
+        FROM products p
+        INNER JOIN categories c ON p.category_id=c.id
+        WHERE p.category_id=?;`,
+        [categoryId]
+    );
+
+    return category[0];
+};
+
+const listInfo = async (categoryId) => {
+    const totalInfo = {};
+    totalInfo['category'] = await categoryInfo(categoryId);
+    totalInfo['products'] = await productInfo(categoryId);
+    return totalInfo;
 };
 
 module.exports = {
