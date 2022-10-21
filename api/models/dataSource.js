@@ -9,13 +9,18 @@ const weKEADataSource = new DataSource({
     database: process.env.TYPEORM_DATABASE
 });
 
-weKEADataSource.initialize()
-    .then(() => {
-        console.log("Data Source has been initialized");
-    })
-    .catch((err) => {
-        console.error('Error occured during Data Source initialization', err);
-        weKEADataSource.destroy();
-    });
+const weKEADataSourceinit = async () => {
+    
+    await weKEADataSource.initialize()
+        .then(() => {
+            console.log("Data Source has been initialized");
+        })
+        .catch((err) => {
+            console.error('Error occured during Data Source initialization', err);
+            weKEADataSource.destroy();
+        });
+}
+
+weKEADataSourceinit();
 
 module.exports = { weKEADataSource }
