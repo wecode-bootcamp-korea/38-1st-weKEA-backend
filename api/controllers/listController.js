@@ -2,7 +2,7 @@ const { listService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const listInfo = catchAsync(async(req, res) => {
-    const { categoryId, size, cursorId, cursorPrice } = req.params;
+    const { categoryId, size } = req.params;
     if(!categoryId) {
         const error = new Error('KEY_ERROR');
         error.statusCode = 400;
@@ -17,21 +17,21 @@ const listInfo = catchAsync(async(req, res) => {
         throw error
     }
 
-    if(!cursorId) {
-        const error = new Error('KEY_ERROR');
-        error.statusCode = 400;
+    // if(!cursorId) {
+    //     const error = new Error('KEY_ERROR');
+    //     error.statusCode = 400;
 
-        throw error
-    }
+    //     throw error
+    // }
 
-    if(!cursorPrice) {
-        const error = new Error('KEY_ERROR');
-        error.statusCode = 400;
+    // if(!cursorPrice) {
+    //     const error = new Error('KEY_ERROR');
+    //     error.statusCode = 400;
 
-        throw error
-    }
+    //     throw error
+    // }
 
-    const getProductsByCategoryId = await listService.listService(categoryId, size, cursorId, cursorPrice);
+    const getProductsByCategoryId = await listService.listService(categoryId, size);
     res.status(200).json({getProductsByCategoryId});
 
 });

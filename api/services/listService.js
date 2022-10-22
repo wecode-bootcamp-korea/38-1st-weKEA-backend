@@ -1,7 +1,7 @@
 const { listDao } = require('../models');
 
-const listService = async(categoryId, size, cursorId, cursorPrice) => {
-    return await listDao.priceASC(categoryId, size, cursorId, cursorPrice);
+const listService = async(categoryId, size) => {
+    return await listDao.getProductsByCat(categoryId, size);
 }
 
 // const ADDPRODUCTS = 4; //How many products we want to show on each page

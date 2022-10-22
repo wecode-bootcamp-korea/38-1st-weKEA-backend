@@ -11,17 +11,32 @@ const getProductsByCat = async(categoryId, size) => {
             c.id AS categoryId,
             o.price AS productPrice,
             o.size AS productSize,
-            o.color AS productColor,
-            i.image_url AS productHoverImage
+            o.color AS productColor
         FROM products p
         INNER JOIN categories c ON p.category_id=c.id
         INNER JOIN product_options o ON p.id=o.product_id
-        INNER JOIN images i ON p.id=i.product_id
         WHERE p.category_id=? AND o.color='black'
         ORDER BY p.id ASC
         LIMIT ?;`,
-        [categoryId, Number(size)]
+        [Number(categoryId), Number(size)]
     );
+
+    const hoverImages = await weKEADataSource.query(`
+        SELECT
+            i.image_url AS productHoverImage
+        FROM products p
+        INNER JOIN images i ON p.id=i.product_id
+        INNER JOIN product_options o ON p.id=o.product_id
+        INNER JOIN categories c ON p.category_id=c.id
+        WHERE p.category_id=? AND o.color='black'
+        ORDER BY p.id ASC
+        LIMIT ?;`,
+        [Number(categoryId), Number(size)]
+    )
+
+    for (let i=0; i<products.length;i++) {
+        products[i]['productHoverImages'] = hoverImages[i];
+    };
 
     return products;
 };
