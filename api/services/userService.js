@@ -50,13 +50,14 @@ const signIn = async(email, password) => {
     }
 
     const user = await userDao.getUserByEmail(email);
+    console.log(user);
     
     if(!user) {
         const error = new Error('WRONG_EMAIL')
     }
 
     const match = await bcrypt.compare(password, user.password);
-
+    
     if(!match) {
         const error = new Error('WRONG_PASSWORD')
     }
