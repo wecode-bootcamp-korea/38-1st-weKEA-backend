@@ -1,3 +1,4 @@
+const { UsingJoinTableOnlyOnOneSideAllowedError } = require('typeorm');
 const { weKEADataSource } = require('./dataSource');
 
 const productDetail = async(id) => {
@@ -38,7 +39,7 @@ const productDetail = async(id) => {
 
      productDetails[0]['images']=productImages;
      productDetails[0]['options']=productOptions[0];
-     
+
      return productDetails[0];
 };
 
