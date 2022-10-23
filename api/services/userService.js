@@ -53,12 +53,16 @@ const signIn = async(email, password) => {
     
     if(!user) {
         const error = new Error('WRONG_EMAIL')
+        error.statusCode=401;
+        throw error
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if(!match) {
         const error = new Error('WRONG_PASSWORD')
+        error.statusCode=401;
+        throw error
     }
 
     const accessToken = jwt.sign({id:user.id}, process.env.JWT_SECRET,{
