@@ -9,8 +9,9 @@ const addCart = catchAsync(async (req, res) => {
 });
 
 const getCart = catchAsync(async (req, res) => {
-    //const user = req.user.id;
+    // const user = req.user.id;
     const { userId } = req.body;
+
     if(!userId) {
         const error = new Error('USER_ID_IS_NOT_VALID');
         error.statusCode = 400;
