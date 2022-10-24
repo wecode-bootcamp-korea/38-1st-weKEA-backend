@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { listController } = require('../controllers');
 
-router.get('/:categoryId/:size', listController.listInfo);
+router.get('/:categoryId', listController.listInfo);
 
 module.exports = router;

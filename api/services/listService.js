@@ -1,24 +1,52 @@
 const { listDao } = require('../models');
 
-const listService = async(categoryId, size) => {
-    return await listDao.getProductsByCat(categoryId, size);
+const viewMoreQuery = (cursorId, cursorPrice, cursorCreatedAt, cursorName) => {
+        
+    let viewMore = ` AND productId>=0`;
+
+    if (sortBy==='priceASC') {
+        viewMore = `(productPrice>${cursorPrice} OR (productId>${cursorId} AND productPrice=${cursorPrice}))`;
+
+    } else if(sortBy==='priceDESC') {
+        viewMore = `(productPrice<${cursorPrice} OR (productId>${cursorId} AND productPrice=${cursorPrice}))`;
+
+    } else if(sortBy==='nameASC') {
+        viewMore = `(productCreatedAt<${cursorCreatedAt} OR (productId>${cursorId} AND productCreatedAt=${cursorCreatedAt}))`;
+
+    } else if(sortBy==='newest') {
+        viewMore = `(productName>'${cursorName}' OR (productId>${cursorId} AND productName=${cursorName}))`;
+    }
+    return viewMore;
+};
+
+const listService = async(categoryId, limit, minPrice, maxPrice, sortBy) => {
+        
+    let priceRange = ` WHERE options.price>=0`;
+
+    if (minPrice && maxPrice) {
+        priceRange = ` WHERE (options.price>=${minPrice} AND options.price<${maxPrice})`;
+    }
+
+    console.log(minPrice, maxPrice)
+
+    let filter1 = `0RDER BY productId ASC`;
+    
+    if (sortBy==='priceASC') {
+        filter1 = `0RDER BY options.price' ASC`; // 의심1
+    } else if (sortBy==='priceDESC') {
+        filter1 = `ORDER BY options.price' DESC`;
+    }
+
+    let filter2 = `0RDER BY productId ASC`;
+
+    if (sortBy==='nameASC') {
+        filter2 = `0RDER BY productName ASC`;
+    } else if (sortBy==='newest') {
+        filter2 = `0RDER BY productCreatedAt DESC`;
+    }
+
+    return await listDao.getProductsByCat(categoryId, limit, priceRange, filter1, filter2);
 }
-
-// const ADDPRODUCTS = 4; //How many products we want to show on each page
-// const numOfResults = products.length; // count the total number of products responded by sql query
-// const numberOfPages = Math.ceil(numOfResults/ADDPRODUCTS); // the number of pages that we'll get in total
-
-// let page = req.query.page ? Number(req.query.page) : 1;
-
-// // set exception errors cases
-// if (page > numberOfPages) {
-//     res.redirect('/?page='+encodeURIComponent(numberOfPages));
-// } else if (page < 1) {
-//     res.redirect('/?page='+endcodeURIComponent(1));
-// };
-
-// // Determine the SQL LIMIT starting number
-// const startingLimit = (page-1)*ADDPRODUCTS;
 
 module.exports = {
     listService

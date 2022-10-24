@@ -29,6 +29,13 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
         throw error
     }
 
+    if(user) {
+        const error = new Error('CANNOT_USE_THIS_EMAIL');
+        error.statusCode = 401;
+
+        throw error
+    }
+
     const hashedPassword =  await hashPassword(password);
     return await userDao.createUser(lastName, firstName, birthday, phoneNumber, point, email, hashedPassword);
 }
@@ -40,25 +47,33 @@ const signIn = async(email, password) => {
     if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
         error.statusCode = 400;
+
         throw error
     }
 
     if(!PWREGEX.test(password)) {
         const error = new Error('INVALID_PASSWORD');
         error.statusCode = 400;
+
         throw error
     }
 
     const user = await userDao.getUserByEmail(email);
     
     if(!user) {
-        const error = new Error('WRONG_EMAIL')
+        const error = new Error('WRONG_EMAIL');
+        error.statusCode = 401;
+
+        throw error
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if(!match) {
-        const error = new Error('WRONG_PASSWORD')
+        const error = new Error('WRONG_PASSWORD');
+        error.statusCode = 401;
+
+        throw error
     }
 
     const accessToken = jwt.sign({id:user.id}, process.env.JWT_SECRET,{

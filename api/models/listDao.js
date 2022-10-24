@@ -1,75 +1,55 @@
 const { weKEADataSource } = require('./dataSource');
 
-const getProductsByCat = async(categoryId, size) => {
+const getProductsByCat = async(categoryId, limit, priceRange, filter1, filter2) => {
+
+    // PRICE RANGE // 별칭 업데이트함 // filter
     const products = await weKEADataSource.query(`
         SELECT
             p.id AS productId,
             p.name AS productName,
-            p.thumbnail AS productThumbNail,
+            p.thumbnail AS productThumbnail,
             p.created_at AS productCreatedAt,
-            c.name AS categoryName,
-            c.id AS categoryId,
-            o.price AS productPrice,
-            o.size AS productSize,
-            o.color AS productColor
+            pi.hoverImages AS hoverImages,
+            po.options AS productOptions
         FROM products p
-        INNER JOIN categories c ON p.category_id=c.id
-        INNER JOIN product_options o ON p.id=o.product_id
-        WHERE p.category_id=? AND o.color='black'
-        ORDER BY p.id ASC
+        LEFT JOIN(
+            SELECT
+                product_id,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        "id", id,
+                        "url", image_url
+                    )
+                ) as hoverImages
+            FROM images
+            GROUP BY product_id
+        ) pi ON p.id=pi.product_id
+        LEFT JOIN(
+            SELECT
+                product_id,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        "option_id", id,
+                        "size", size,
+                        "color", color,
+                        "price", price
+                    )
+                ) as options
+            FROM product_options
+            ${priceRange}
+            ${filter1}
+            GROUP BY product_id
+        ) po ON p.id=po.product_id
+        WHERE p.category_id=?
+        ${filter2}
+        GROUP BY p.id
         LIMIT ?;`,
-        [Number(categoryId), Number(size)]
+        [Number(categoryId), Number(limit)]
     );
-
-    const hoverImages = await weKEADataSource.query(`
-        SELECT
-            i.image_url AS productHoverImage
-        FROM products p
-        INNER JOIN images i ON p.id=i.product_id
-        INNER JOIN product_options o ON p.id=o.product_id
-        INNER JOIN categories c ON p.category_id=c.id
-        WHERE p.category_id=? AND o.color='black'
-        ORDER BY p.id ASC
-        LIMIT ?;`,
-        [Number(categoryId), Number(size)]
-    )
-
-    for (let i=0; i<products.length;i++) {
-        products[i]['productHoverImages'] = hoverImages[i];
-    };
 
     return products;
 };
 
-// filtering & pagination 동시 진행 - price ASC, price DESC
-// images를 하나만 꺼내고 싶다면..? 별도로 구성해야 하나?
-const priceASC = async(categoryId, size, cursorId, cursorPrice) => {
-    const priceASC = await weKEADataSource.query(`
-        SELECT
-            p.id AS productId,
-            p.name AS productName,
-            p.thumbnail AS productThumbNail,
-            p.created_at AS productCreatedAt,
-            c.name AS categoryName,
-            c.id AS categoryId,
-            o.price AS productPrice,
-            o.size AS productSize,
-            o.color AS productColor,
-            i.image_url AS productHoverImage
-        FROM products p
-        INNER JOIN categories c ON p.category_id=c.id
-        INNER JOIN product_options o ON p.id=o.product_id
-        INNER JOIN images i ON p.id=i.product_id
-        WHERE p.category_id=? AND o.color='black' AND (o.price > ? OR (o.price = ? AND p.id >? ))
-        ORDER BY o.price ASC, p.id ASC
-        LIMIT ?;`,
-        [categoryId, cursorPrice, cursorPrice, cursorId, Number(size)]
-    );
-
-    return priceASC;
-};
-
 module.exports = {
-    getProductsByCat,
-    priceASC
+    getProductsByCat
 }
