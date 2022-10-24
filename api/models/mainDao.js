@@ -8,7 +8,6 @@ const { weKEADataSource } = require('./dataSource');
            id.push(Math.floor(Math.random() * 50)+1);
            count--;
         };
-        // AS category,
 
         const result =[];
         for(let i=0;i<id.length;i++){
