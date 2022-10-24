@@ -11,8 +11,8 @@ const addCart = async(userId, productOId, quantity) => {
     }
 };
 
-const getCart = async(userId) => {
-    return await cartDao.getCart(userId);
+const getCart = async() => {
+    return await cartDao.getCart();
 };
 
 const allDeleteCart = async(userId) => {

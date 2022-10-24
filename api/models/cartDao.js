@@ -29,7 +29,7 @@ const updateCart = async(findCartId, quantity) => {
     `)
 };
 
-const getCart = async (userId) => {
+const getCart = async () => {
     const result = await weKEADataSource.query(`
         SELECT
             c.id,
@@ -44,8 +44,9 @@ const getCart = async (userId) => {
         INNER JOIN product_options o ON c.product_option_id = o.id 
         INNER JOIN products p ON o.product_id = p.id
         INNER JOIN users u ON c.user_id = u.id
-        WHERE u.id = ${userId}       
     `)
+    // WHERE u.id = ${userId}       
+
     return result;
 }
 

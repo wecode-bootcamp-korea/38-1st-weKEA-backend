@@ -10,16 +10,16 @@ const addCart = catchAsync(async (req, res) => {
 
 const getCart = catchAsync(async (req, res) => {
     // const user = req.user.id;
-    const { userId } = req.body;
+    // const { userId } = req.body;
 
-    if(!userId) {
-        const error = new Error('USER_ID_IS_NOT_VALID');
-        error.statusCode = 400;
+    // if(!userId) {
+    //     const error = new Error('USER_ID_IS_NOT_VALID');
+    //     error.statusCode = 400;
 
-        throw error;
-    }
+    //     throw error;
+    // }
 
-    const getCart = await cartService.getCart(userId);
+    const getCart = await cartService.getCart();
     res.status(200).json({ getCart });
 });
 
