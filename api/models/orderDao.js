@@ -26,7 +26,7 @@ const checkPoints = async(id, totalPrice) => {
         FROM users
         WHERE id=${id};
     `);
-    if(getPoints<totalPrice){
+    if(getPoints[0].point<totalPrice){
         const error = new Error('Not_Enough_Points');
         error.statusCode = 400;
 
