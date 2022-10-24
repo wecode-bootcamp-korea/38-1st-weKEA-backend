@@ -1,7 +1,6 @@
-const { UsingJoinTableOnlyOnOneSideAllowedError } = require('typeorm');
 const { weKEADataSource } = require('./dataSource');
 
-const productDetail = async(id) => {
+const getProductDetailById = async(id) => {
     const productDetails = await weKEADataSource.query(`
         SELECT
             products.id AS id,
@@ -16,7 +15,7 @@ const productDetail = async(id) => {
      const productImages = await weKEADataSource.query(`
         SELECT
           id,
-          image_url
+          image_url AS url
         FROM images
         WHERE product_id=?;`,[id]
      );
@@ -44,5 +43,5 @@ const productDetail = async(id) => {
 };
 
 module.exports = {
-    productDetail
+  getProductDetailById
 }

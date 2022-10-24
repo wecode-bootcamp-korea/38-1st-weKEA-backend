@@ -1,7 +1,7 @@
 const { pageService } = require('../services')
 const { catchAsync } = require('../utils/error');
 
-const productDetail = catchAsync(async(req, res) => {
+const getProductDetailById = catchAsync(async(req, res) => {
      const id = req.params.id;
 
      if(!id){
@@ -10,10 +10,10 @@ const productDetail = catchAsync(async(req, res) => {
 
           throw error;
      }
-     const productDetail = await pageService.productDetail(id);
+     const productDetail = await pageService.getProductDetailById(id);
      res.status(200).json({productDetail});
 });
 
 module.exports = {
-    productDetail
+     getProductDetailById
 }

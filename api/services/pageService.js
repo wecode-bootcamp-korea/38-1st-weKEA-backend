@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 
 const { pageDao } = require('../models');
 
-const productDetail = async(id) => {
-     const productDetail = await pageDao.productDetail(id);
+const getProductDetailById = async(id) => {
+     const productDetail = await pageDao.getProductDetailById(id);
      return productDetail;
 };
 
 module.exports = {
-    productDetail
+    getProductDetailById
 }
