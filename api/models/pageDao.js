@@ -15,7 +15,7 @@ const productDetail = async(id) => {
      const productImages = await weKEADataSource.query(`
         SELECT
           id,
-          image_url
+          image_url AS url
         FROM images
         WHERE product_id=?;`,[id]
      );
