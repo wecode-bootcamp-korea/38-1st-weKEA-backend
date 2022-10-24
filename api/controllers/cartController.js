@@ -43,8 +43,7 @@ const oneDeleteCart = catchAsync(async (req, res) => {
     // const userId = req.query.userId;
     // const productOptionId = req.query.productOptionId;
     const { userId, productOptionId } = req.body;
-    
-    console.log(userId,productOptionId)
+
     if(!userId || !productOptionId) {
         const error = new Error("DELETE ERROR");
         error.statusCode = 400;
