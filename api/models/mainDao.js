@@ -2,7 +2,7 @@ const { weKEADataSource } = require('./dataSource');
 
     const randomProducts = async () => {
         const id = [];
-        let count = 10;
+        let count = 4;
         
         while(count>0){
            id.push(Math.floor(Math.random() * 50)+1);
