@@ -23,6 +23,21 @@ const getCart = catchAsync(async (req, res) => {
     res.status(200).json({ getCart });
 });
 
+const quantityAddCart = catchAsync(async (req, res) => {
+    const userId = req.user.id;
+    const { productOptionId } = req.query;
+
+    if(!userId || !productOptionId) {
+        const error = new Error("quantity Error");
+        error.statusCode = 400;
+
+        throw error;
+    }
+
+    const quantityAddCart = await cartService.quantityAddCart(userId, productOptionId);
+    res.status(200).json({ quantityAddCart });
+});
+
 const allDeleteCart = catchAsync(async (req, res) => {
     const userId = req.user.id;
 
@@ -35,7 +50,7 @@ const allDeleteCart = catchAsync(async (req, res) => {
 
     const allDeleteCart = await cartService.allDeleteCart(userId);
     res.status(200).json({ allDeleteCart });
-})
+});
 
 const oneDeleteCart = catchAsync(async (req, res) => {
     const userId = req.user.id;
@@ -50,11 +65,12 @@ const oneDeleteCart = catchAsync(async (req, res) => {
 
     const oneDeleteCart = await cartService.oneDeleteCart(userId, productOptionId);
     res.status(200).json({ oneDeleteCart });
-})
+});
 
 module.exports = {
     addCart,
     getCart,
+    quantityAddCart,
     allDeleteCart,
     oneDeleteCart
 }

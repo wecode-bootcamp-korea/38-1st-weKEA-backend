@@ -49,6 +49,27 @@ const getCart = async (userId) => {
     return result;
 }
 
+const quantityAddCart = async (userId, productOptionId) => {
+    const result = await weKEADataSource.query(`
+        SELECT
+            c.id,
+            c.quantity,
+            o.size,
+            o.price,
+            o.color,
+            p.name,
+            p.thumbnail,
+            p.description
+        FROM carts c
+        INNER JOIN product_options o ON c.product_option_id = o.id 
+        INNER JOIN products p ON o.product_id = p.id
+        INNER JOIN users u ON c.user_id = u.id
+        WHERE u.id = ${userId} AND o.id = ${productOptionId}
+        `)     
+
+    return result;
+}
+
 const allDeleteCart = async(userId) => {
     const allDeleteCart = await weKEADataSource.query(`
         DELETE FROM carts c
@@ -70,6 +91,7 @@ module.exports = {
     findCartId,
     updateCart,
     getCart,
+    quantityAddCart,
     allDeleteCart,
     oneDeleteCart
 }

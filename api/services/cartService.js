@@ -15,6 +15,17 @@ const getCart = async(userId) => {
     return await cartDao.getCart(userId);
 };
 
+const quantityAddCart = async(userId, productOptionId) => {
+    if(userId){
+
+        const a = await cartDao.quantityAddCart(userId, productOptionId);
+        a["quantity"] = +1;
+    }
+    else {
+        console.log("수량 체크 오류")
+    }
+};
+
 const allDeleteCart = async(userId) => {
     return await cartDao.allDeleteCart(userId);
 }
@@ -26,6 +37,7 @@ const oneDeleteCart = async(userId, productOptionId) => {
 module.exports = {
     addCart,
     getCart,
+    quantityAddCart,
     allDeleteCart,
     oneDeleteCart
 }
