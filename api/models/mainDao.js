@@ -1,4 +1,4 @@
-const weKEADataSource = require('./dataSource');
+const { weKEADataSource } = require('./dataSource');
 
     const randomProducts = async () => {
         const id = [];
@@ -8,36 +8,51 @@ const weKEADataSource = require('./dataSource');
            id.push(Math.floor(Math.random() * 50)+1);
            count--;
         };
+        // AS category,
 
         const result =[];
         for(let i=0;i<id.length;i++){
             var products = await weKEADataSource.query(`
-                 SELECT
+                SELECT 
                     products.name,
                     products.thumbnail,
                     products.description,
-                    categories.name AS category
-                 FROM products
-                 INNER JOIN categories on products.category_id = categories.id
-                 WHERE products.id=${id[i]}`                                     
-                 );
-            var images = await weKEADataSource.query(`
-                SELECT
-                    image_url AS image
-                FROM images
-                WHERE product_id =${id[i]}`
-                );
-            var product_options = await weKEADataSource.query(`
-                SELECT
-                    size,
-                    price,
-                    color
-                FROM product_options
-                WHERE product_id=${id[i]}`
-                );
-            products[0]['images']=images;
-            products[0]['options']=product_options;
-            result.push(products[0]);
+                    categories.name,
+                    images,
+                    product_options
+                FROM products
+                LEFT JOIN categories on products.category_id=categories.id
+                LEFT JOIN (
+                    SELECT
+                        product_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            "id", id,
+                            "url", image_url
+                        )
+                    ) as images
+                    FROM
+                        images
+                    GROUP BY product_id
+                ) images ON products.id=images.product_id
+                LEFT JOIN (
+                    SELECT 
+                        product_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            "size", size,
+                            "price", price,
+                            "color", color
+                        )
+                    ) as product_options
+                    FROM
+                        product_options
+                    GROUP BY product_id
+                ) product_options ON products.id=product_options.product_id
+                WHERE products.id=${id[i]}
+                GROUP BY products.id;`
+            )   
+            result.push(products);
 
         }
         return result;
