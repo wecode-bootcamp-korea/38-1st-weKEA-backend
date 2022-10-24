@@ -29,8 +29,10 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
         throw error
     }
 
+    const user = await userDao.getUserByEmail(email);
+    
     if(user) {
-        const error = new Error('CANNOT_USE_THIS_EMAIL');
+        const error = new Error('USE_ANOTHER_EMAIL');
         error.statusCode = 401;
 
         throw error
