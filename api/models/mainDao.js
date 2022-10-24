@@ -19,7 +19,7 @@ const weKEADataSource = require('./dataSource');
                     categories.name AS category
                  FROM products
                  INNER JOIN categories on products.category_id = categories.id
-                 WHERE products.id=${id[i]}`
+                 WHERE products.id=${id[i]}`                                     
                  );
             var images = await weKEADataSource.query(`
                 SELECT
