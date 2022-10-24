@@ -3,14 +3,14 @@ const { catchAsync } = require('../utils/error');
 
 const signUp = catchAsync(async(req, res) => {
     const DEFAULT_POINT = 1000000;
-    const { lastName, firstName, birthday, phoneNumber, email, password } = req.body;
-    if(!lastName||!firstName||!birthday||!phoneNumber||!email||!password) {
+    const { last_name, first_name, birthday, phone_number, email, password } = req.body;
+    if(!last_name||!first_name||!birthday||!phone_number||!email||!password) {
         const error = new Error('KEY_ERROR');
         error.statusCode = 400;
 
         throw error
     }
-    const insertId =  await userService.signUp(lastName, firstName, birthday, phoneNumber, DEFAULT_POINT, email, password);
+    const insertId =  await userService.signUp(last_name, first_name, birthday, phone_number, DEFAULT_POINT, email, password);
     res.status(201).json({insertId});
     
 })

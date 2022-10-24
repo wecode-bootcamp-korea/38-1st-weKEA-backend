@@ -1,12 +1,12 @@
 const express = require('express');
 const router  = express.Router();
-// const { loginRequired } = require('../utils/auth');
+const { loginRequired } = require('../utils/auth');
 
 const { cartController } = require('../controllers');
 
-router.post('', cartController.addCart);
-router.get('', cartController.getCart);
-router.delete('/deleteall', cartController.allDeleteCart);
-router.delete('/deleteone', cartController.oneDeleteCart);
+router.post('',loginRequired, cartController.addCart);
+router.get('',loginRequired, cartController.getCart);
+router.delete('/deleteall',loginRequired, cartController.allDeleteCart);
+router.delete('/deleteone',loginRequired, cartController.oneDeleteCart);
 
 module.exports = router;

@@ -1,23 +1,22 @@
 const { weKEADataSource } = require('./dataSource');
 
-const addCart = async (userId, productOId, quantity) => {
-    console.log(userId, productOId, quantity)
+const addCart = async (userId, productOptionId, quantity) => {
     const addCart = await weKEADataSource.query(`
         INSERT INTO carts(
             user_id,
             product_option_id,
             quantity
-        ) values(?,?,?);`,[userId, productOId, quantity]
+        ) values(?,?,?);`,[userId, productOptionId, quantity]
     ) 
     return addCart.insertId;
 };
 
-const findCartId = async(userId, productOId) => {
+const findCartId = async(userId, productOptionId) => {
     return await weKEADataSource.query(`
         SELECT 
             id
         FROM carts
-        WHERE user_id=${userId} AND product_option_id=${productOId}; 
+        WHERE user_id=${userId} AND product_option_id=${productOptionId}; 
     `) 
 }
 
@@ -29,7 +28,7 @@ const updateCart = async(findCartId, quantity) => {
     `)
 };
 
-const getCart = async () => {
+const getCart = async (userId) => {
     const result = await weKEADataSource.query(`
         SELECT
             c.id,
@@ -44,8 +43,8 @@ const getCart = async () => {
         INNER JOIN product_options o ON c.product_option_id = o.id 
         INNER JOIN products p ON o.product_id = p.id
         INNER JOIN users u ON c.user_id = u.id
-    `)
-    // WHERE u.id = ${userId}       
+        WHERE u.id = ${userId} 
+        `)     
 
     return result;
 }
@@ -59,9 +58,6 @@ const allDeleteCart = async(userId) => {
 }
 
 const oneDeleteCart = async (userId, productOptionId) => {
-    // const awaitUserId = await userID;
-    // const awaitProductOptionId = await productOptionId;
-    // console.log(userID,productOptionId)
     const oneDeleteCart = await weKEADataSource.query(`
         DELETE FROM carts c
         WHERE c.user_id=${userId} AND c.product_option_id=${productOptionId}

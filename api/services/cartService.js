@@ -1,18 +1,18 @@
 const { cartDao } = require('../models');
 
-const addCart = async(userId, productOId, quantity) => {
-    const findCartId = await cartDao.findCartId(userId, productOId);
-
+const addCart = async(userId, productOptionId, quantity) => {
+    const findCartId = await cartDao.findCartId(userId, productOptionId);
+    
     if(findCartId.length==0){
-        return await cartDao.addCart(userId, productOId, quantity);
+        return await cartDao.addCart(userId, productOptionId, quantity);
     }
     else{
         return await cartDao.updateCart(findCartId[0].id, quantity);
     }
 };
 
-const getCart = async() => {
-    return await cartDao.getCart();
+const getCart = async(userId) => {
+    return await cartDao.getCart(userId);
 };
 
 const allDeleteCart = async(userId) => {
