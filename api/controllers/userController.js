@@ -35,7 +35,16 @@ const signIn = async(req, res) => {
     }
 };
 
+const myPage = catchAsync(async (req, res) => {
+	const user = req.user;
+
+	const myPageInfo = await userService.myPageInfo(user);
+
+	res.status(200).json({ data: myPageInfo });
+});
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    myPage
 }

@@ -75,8 +75,20 @@ const signIn = async(email, password) => {
     return userInfo;
 };
 
+const myPageInfo = async(user) => {
+
+    const userInfo = {};
+    userInfo['userName'] = {};
+    userInfo.userName['firstName'] = user.firstName;
+    userInfo.userName['lastName'] = user.lastName;
+    userInfo['point'] = user.point;
+
+    return userInfo;
+}
+
 module.exports = {
     getUserById,
     signUp,
-    signIn
+    signIn,
+    myPageInfo
 }
