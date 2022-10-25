@@ -3,7 +3,7 @@ const { catchAsync } = require('../utils/error');
 
 const categoryInfo = catchAsync(async(req, res) => {
     const { categoryId } = req.params;
-    const { offset, limit, minPrice, maxPrice, sortBy, cursorId, cursorPrice, cursorCreatedAt, cursorName } = req.query;
+    const { offset, limit, minPrice, maxPrice, sortBy } = req.query;
 
     if(!categoryId) {
         const error = new Error('KEY_ERROR');
@@ -26,7 +26,7 @@ const categoryInfo = catchAsync(async(req, res) => {
         throw error
     }
 
-    const getProductsByCategoryId = await categoryService.categoryService(categoryId, offset, limit, minPrice, maxPrice, sortBy, cursorId, cursorPrice, cursorCreatedAt, cursorName);
+    const getProductsByCategoryId = await categoryService.categoryService(categoryId, offset, limit, minPrice, maxPrice, sortBy);
     res.status(200).json({getProductsByCategoryId});
     
 });

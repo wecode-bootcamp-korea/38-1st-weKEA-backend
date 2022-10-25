@@ -1,6 +1,6 @@
 const { categoryDao } = require('../models');
 
-const categoryService = async(categoryId, offset, limit, minPrice, maxPrice, sortBy, cursorId, cursorPrice, cursorCreatedAt, cursorName) => {
+const categoryService = async(categoryId, offset, limit, minPrice, maxPrice, sortBy) => {
 
     const ordering = async(sortBy) => {
 
