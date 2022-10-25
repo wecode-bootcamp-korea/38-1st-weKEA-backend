@@ -1,7 +1,7 @@
 const { wekeaDataSource } = require('./dataSource');
 
 const getProductDetailById = async(id) => {
-    const productDetails = await wekeaDataSource.query(`
+    const products = await wekeaDataSource.query(`
         SELECT
             products.id AS id,
             products.name AS name,
@@ -36,10 +36,10 @@ const getProductDetailById = async(id) => {
      productOptions[0]['color']=[];
      productOptions[0].color.push(productOptionColor[0].color, productOptionColor[1].color);
 
-     productDetails[0]['images']=productImages;
-     productDetails[0]['options']=productOptions[0];
+     products[0]['images']=productImages;
+     products[0]['options']=productOptions[0];
 
-     return productDetails[0];
+     return products[0];
 };
 
 module.exports = {
