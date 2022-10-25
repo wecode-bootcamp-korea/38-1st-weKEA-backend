@@ -1,7 +1,7 @@
-const { weKEADataSource } = require('./dataSource');
+const { wekeaDataSource } = require('./dataSource');
 
 const getUserById = async(id) => {
-    const result = await weKEADataSource.query(`
+    const result = await wekeaDataSource.query(`
         SELECT
             id,
             last_name AS lastName,
@@ -19,7 +19,7 @@ const getUserById = async(id) => {
 };
 
 const createUser = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
-    const result = await weKEADataSource.query(`
+    const result = await wekeaDataSource.query(`
         INSERT INTO users (
             last_name,
             first_name,
@@ -36,7 +36,7 @@ const createUser = async(lastName, firstName, birthday, phoneNumber, point, emai
 };
 
 const getUserByEmail = async(email) => {
-    const result = await weKEADataSource.query(`
+    const result = await wekeaDataSource.query(`
         SELECT
             id,
             last_name AS lastName,
