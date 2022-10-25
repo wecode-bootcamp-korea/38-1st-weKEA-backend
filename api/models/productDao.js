@@ -1,6 +1,6 @@
 const { weKEADataSource } = require('./dataSource');
 
-    const randomProducts = async () => {
+    const getRandomProducts = async () => {
         const id = [];
         let count = 4;
         
@@ -58,5 +58,5 @@ const { weKEADataSource } = require('./dataSource');
     }
 
 module.exports = {
-    randomProducts
+    getRandomProducts
 };

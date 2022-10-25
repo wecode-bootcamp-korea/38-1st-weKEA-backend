@@ -1,7 +1,7 @@
 const userController = require('./userController');
-const mainController = require('./mainController');
+const productController = require('./productController');
 
 module.exports = {
     userController,
-    mainController
+    productController
 }
