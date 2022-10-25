@@ -40,6 +40,7 @@ const getUserByEmail = async(email) => {
             id,
             last_name AS lastName,
             first_name AS firstName,
+            point,
             password
         FROM users
         WHERE email=?;`,

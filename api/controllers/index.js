@@ -1,7 +1,7 @@
 const userController = require('./userController');
-const listController = require('./listController');
+const categoryController = require('./categoryController');
 
 module.exports = {
     userController,
-    listController
+    categoryController
 }
