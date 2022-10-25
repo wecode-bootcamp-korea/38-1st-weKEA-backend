@@ -1,7 +1,16 @@
+const { TreeRepositoryUtils } = require('typeorm');
 const { orderDao, enums } = require('../models');
 
 const getOrders = async(userId) => {
-     return await orderDao.getOrders(userId)
+    const userOrders = await orderDao.getOrders(userId);
+    
+    if(!userOrders[0]){
+        const error = new Error('Ordered_Nothing');
+        error.statusCode = 400;
+
+        throw error;
+    }
+    return userOrders;
 };
 
 const addToOrders = async(userId, totalPrice) => {

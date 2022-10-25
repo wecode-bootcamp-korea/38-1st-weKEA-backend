@@ -1,8 +1,8 @@
-const { weKEADataSource } = require('./dataSource');
+const { wekeaDataSource } = require('./dataSource');
 const { orderStatusEnum } = require('./enums');
 
 const getOrders = async(id) => {
-    const getOrders = await weKEADataSource.query(`
+    const getOrders = await wekeaDataSource.query(`
         SELECT
             products.name AS name,
             o.id AS orderId,
@@ -21,7 +21,7 @@ const getOrders = async(id) => {
 };
 
 const checkPoints = async(id) => {
-    const getPoints = await weKEADataSource.query(`
+    const getPoints = await wekeaDataSource.query(`
         SELECT
             point
         FROM users
@@ -31,14 +31,14 @@ const checkPoints = async(id) => {
 };
 
 const MoveCartToOrder = async(id, totalPrice) => {
-    await weKEADataSource.query(`
+    await wekeaDataSource.query(`
         UPDATE users 
         SET
             point=point-?
         WHERE id=?;`,[totalPrice, id]
     );
 
-    const userCarts = await weKEADataSource.query(`
+    const userCarts = await wekeaDataSource.query(`
         SELECT
             product_option_id,
             quantity
@@ -47,7 +47,7 @@ const MoveCartToOrder = async(id, totalPrice) => {
     );
 
     for(var i=0; i<userCarts.length; i++){
-        await weKEADataSource.query(`
+        await wekeaDataSource.query(`
             INSERT INTO orders(
                 user_id,
                 product_option_id,
@@ -58,7 +58,7 @@ const MoveCartToOrder = async(id, totalPrice) => {
         );
     } 
     
-    const deleteCarts = await weKEADataSource.query(`
+    const deleteCarts = await wekeaDataSource.query(`
         DELETE
         FROM carts
         WHERE user_id=?;`,[id]
@@ -67,23 +67,24 @@ const MoveCartToOrder = async(id, totalPrice) => {
 };
 
 const checkOrderStatus = async(orderId) => {
-    const orderStatus = await weKEADataSource.query(`
+    const orderStatus = await wekeaDataSource.query(`
         SELECT
             order_status_id AS osi
         FROM orders
         WHERE id=?`,[orderId]
     );
+    console.log(orderStatus);
     return orderStatus[0].osi;
 };
 
 const cancelOrders = async(userId, orderId, totalPrice) => {
-    await weKEADataSource.query(`
+    await wekeaDataSource.query(`
         UPDATE users 
         SET
             point=point+?
         WHERE id=?;`,[totalPrice, userId]);
 
-    const cancelOrders = await weKEADataSource.query(`
+    const cancelOrders = await wekeaDataSource.query(`
         UPDATE orders
         SET
             order_status_id=?
