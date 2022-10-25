@@ -1,7 +1,7 @@
-const { weKEADataSource } = require('./dataSource');
+const { wekeaDataSource } = require('./dataSource');
 
 const getProductDetailById = async(id) => {
-    const productDetails = await weKEADataSource.query(`
+    const productDetails = await wekeaDataSource.query(`
         SELECT
             products.id AS id,
             products.name AS name,
@@ -12,21 +12,21 @@ const getProductDetailById = async(id) => {
         INNER JOIN categories ON products.category_id=categories.id
         WHERE products.id=?;`,[id]
     );
-     const productImages = await weKEADataSource.query(`
+     const productImages = await wekeaDataSource.query(`
         SELECT
           id,
           image_url AS url
         FROM images
         WHERE product_id=?;`,[id]
      );
-     const productOptions = await weKEADataSource.query(`
+     const productOptions = await wekeaDataSource.query(`
         SELECT
           size,
           price
         FROM product_options
         WHERE product_id=?;`, [id]
      );
-     const productOptionColor = await weKEADataSource.query(`
+     const productOptionColor = await wekeaDataSource.query(`
         SELECT
           color
         FROM product_options

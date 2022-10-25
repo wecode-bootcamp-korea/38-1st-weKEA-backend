@@ -1,6 +1,6 @@
 const { DataSource } = require('typeorm');
 
-const weKEADataSource = new DataSource({
+const wekeaDataSource = new DataSource({
     type: process.env.TYPEORM_CONNECTION,
     username: process.env.TYPEORM_USERNAME,
     password: process.env.TYPEORM_PASSWORD,
@@ -9,18 +9,18 @@ const weKEADataSource = new DataSource({
     database: process.env.TYPEORM_DATABASE
 });
 
-const weKEADataSourceInit = async () => {
+const wekeaDataSourceInit = async () => {
     
-    await weKEADataSource.initialize()
+    await wekeaDataSource.initialize()
         .then(() => {
             console.log("Data Source has been initialized");
         })
         .catch((err) => {
             console.error('Error occured during Data Source initialization', err);
-            weKEADataSource.destroy();
+            wekeaDataSource.destroy();
         });
 }
 
-weKEADataSourceInit();
+wekeaDataSourceInit();
 
-module.exports = { weKEADataSource }
+module.exports = { wekeaDataSource }

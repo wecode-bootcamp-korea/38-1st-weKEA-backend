@@ -1,10 +1,10 @@
 const dataSource = require('./dataSource');
 
 const userDao = require('./userDao');
-const pageDao = require('./pageDao');
+const productDetailDao = require('./productDetailDao');
 
 module.exports = {
     dataSource,
     userDao,
-    pageDao
+    productDetailDao
 }

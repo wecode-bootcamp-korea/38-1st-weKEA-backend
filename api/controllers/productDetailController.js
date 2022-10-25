@@ -1,4 +1,4 @@
-const { pageService } = require('../services')
+const { productDetailService } = require('../services')
 const { catchAsync } = require('../utils/error');
 
 const getProductDetailById = catchAsync(async(req, res) => {
@@ -10,7 +10,7 @@ const getProductDetailById = catchAsync(async(req, res) => {
 
           throw error;
      }
-     const productDetail = await pageService.getProductDetailById(id);
+     const productDetail = await productDetailService.getProductDetailById(id);
      res.status(200).json({productDetail});
 });
 
