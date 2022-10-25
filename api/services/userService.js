@@ -7,6 +7,8 @@ const getUserById = async(id) => {
     return await userDao.getUserById(id);
 }
 
+console.log(getUserById);
+
 const hashPassword = async(plainPassword) => {
     const saltRounds = 10;
     const salt =await bcrypt.genSalt(saltRounds);
