@@ -6,8 +6,8 @@ const addCart = async(userId, productOptionId, quantity) => {
     if(findCartId.length==0){
         return await cartDao.addCart(userId, productOptionId, quantity);
     }
-    else{
-        return await cartDao.updateCart(findCartId[0].id, quantity);
+    else {
+        return await cartDao.onePlusQuantity(findCartId[0].id, quantity);
     }
 };
 
@@ -15,15 +15,12 @@ const getCart = async(userId) => {
     return await cartDao.getCart(userId);
 };
 
-const quantityAddCart = async(userId, productOptionId) => {
-    if(userId){
+const messageName = async(productOptionId) => {
+    return await cartDao.messageName(productOptionId);
+};
 
-        const a = await cartDao.quantityAddCart(userId, productOptionId);
-        a["quantity"] = +1;
-    }
-    else {
-        console.log("수량 체크 오류")
-    }
+const cartQuantityChange = async(userId, productOptionId, quantity) => {
+    return await cartDao.cartQuantityChange(userId, productOptionId, quantity);
 };
 
 const allDeleteCart = async(userId) => {
@@ -37,7 +34,8 @@ const oneDeleteCart = async(userId, productOptionId) => {
 module.exports = {
     addCart,
     getCart,
-    quantityAddCart,
+    messageName,
+    cartQuantityChange,
     allDeleteCart,
     oneDeleteCart
 }

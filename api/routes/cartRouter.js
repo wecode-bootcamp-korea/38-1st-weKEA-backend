@@ -6,7 +6,7 @@ const { cartController } = require('../controllers');
 
 router.post('',loginRequired, cartController.addCart);
 router.get('',loginRequired, cartController.getCart);
-router.post('onePlus', loginRequired, cartController.quantityAddCart);
+router.patch('/plusquantity', loginRequired, cartController.cartQuantityChange);
 router.delete('/deleteall',loginRequired, cartController.allDeleteCart);
 router.delete('/deleteone',loginRequired, cartController.oneDeleteCart);
 

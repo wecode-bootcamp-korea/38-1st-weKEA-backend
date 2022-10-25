@@ -20,11 +20,11 @@ const findCartId = async(userId, productOptionId) => {
     `) 
 }
 
-const updateCart = async(findCartId, quantity) => {
+const onePlusQuantity = async(findCartId) => {
     return await weKEADataSource.query(`
         UPDATE carts
-        SET quantity=${quantity}
-        WHERE id=${findCartId};
+        SET quantity = quantity + 1
+        WHERE id =${findCartId};
     `)
 };
 
@@ -47,25 +47,22 @@ const getCart = async (userId) => {
         `)     
 
     return result;
-}
+};
 
-const quantityAddCart = async (userId, productOptionId) => {
+const messageName = async (productOptionId) => {
+    return await weKEADataSource.query(`
+        SELECT name
+        FROM products
+        WHERE id=${productOptionId}
+    `)
+};
+
+const cartQuantityChange = async (userId, productOptionId, quantity) => {
     const result = await weKEADataSource.query(`
-        SELECT
-            c.id,
-            c.quantity,
-            o.size,
-            o.price,
-            o.color,
-            p.name,
-            p.thumbnail,
-            p.description
-        FROM carts c
-        INNER JOIN product_options o ON c.product_option_id = o.id 
-        INNER JOIN products p ON o.product_id = p.id
-        INNER JOIN users u ON c.user_id = u.id
-        WHERE u.id = ${userId} AND o.id = ${productOptionId}
-        `)     
+        UPDATE carts
+        SET quantity = ${quantity}
+        WHERE user_id = ${userId} AND product_option_id = ${productOptionId}
+    `)
 
     return result;
 }
@@ -89,9 +86,10 @@ const oneDeleteCart = async (userId, productOptionId) => {
 module.exports = {
     addCart,
     findCartId,
-    updateCart,
+    onePlusQuantity,
     getCart,
-    quantityAddCart,
+    messageName,
+    cartQuantityChange,
     allDeleteCart,
     oneDeleteCart
 }
