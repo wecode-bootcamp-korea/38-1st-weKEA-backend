@@ -1,12 +1,11 @@
 const dataSource = require('./dataSource');
-
+const enums = require('./enums')
 const userDao = require('./userDao');
-const pageDao = require('./pageDao');
 const orderDao = require('./orderDao');
 
 module.exports = {
     dataSource,
     userDao,
-    pageDao,
-    orderDao
+    orderDao,
+    enums
 }

@@ -1,4 +1,5 @@
 const { weKEADataSource } = require('./dataSource');
+const { orderStatusEnum } = require('./enums');
 
 const getOrders = async(id) => {
     const getOrders = await weKEADataSource.query(`
@@ -19,35 +20,31 @@ const getOrders = async(id) => {
     return getOrders;
 };
 
-const checkPoints = async(id, totalPrice) => {
+const checkPoints = async(id) => {
     const getPoints = await weKEADataSource.query(`
         SELECT
             point
         FROM users
-        WHERE id=${id};
-    `);
-    if(getPoints[0].point<totalPrice){
-        const error = new Error('Not_Enough_Points');
-        error.statusCode = 400;
+        WHERE id=?;`,[id]
+    );
+    return getPoints[0].point;
+};
 
-        throw error
-    };
+const MoveCartToOrder = async(id, totalPrice) => {
     await weKEADataSource.query(`
         UPDATE users 
         SET
-            point=point-${totalPrice}
-        WHERE id=${id};
-    `);
-};
+            point=point-?
+        WHERE id=?;`,[totalPrice, id]
+    );
 
-const MoveCartToOrder = async(id) => {
     const userCarts = await weKEADataSource.query(`
         SELECT
             product_option_id,
             quantity
         FROM carts
-        WHERE user_id=${id};
-    `);
+        WHERE user_id=?;`,[id]
+    );
 
     for(var i=0; i<userCarts.length; i++){
         await weKEADataSource.query(`
@@ -57,38 +54,47 @@ const MoveCartToOrder = async(id) => {
                 quantity,
                 order_status_id
             ) VALUES (?,?,?,?);`
-            ,[id, userCarts[i].product_option_id, userCarts[i].quantity, 1]
+            ,[id, userCarts[i].product_option_id, userCarts[i].quantity, orderStatusEnum.addOrder]
         );
     } 
     
     const deleteCarts = await weKEADataSource.query(`
         DELETE
         FROM carts
-        WHERE user_id=${id};
-    `);
+        WHERE user_id=?;`,[id]
+    );
     return deleteCarts;
 };
 
-const removeOrders = async(userId, orderId, totalPrice) => {
+const checkOrderStatus = async(orderId) => {
+    const orderStatus = await weKEADataSource.query(`
+        SELECT
+            order_status_id AS osi
+        FROM orders
+        WHERE id=?`,[orderId]
+    );
+    return orderStatus[0].osi;
+};
+
+const cancelOrders = async(userId, orderId, totalPrice) => {
     await weKEADataSource.query(`
         UPDATE users 
         SET
-            point=point+${totalPrice}
-        WHERE id=${userId};
-    `);
+            point=point+?
+        WHERE id=?;`,[totalPrice, userId]);
 
-    const deleteOrders = await weKEADataSource.query(`
-        DELETE
-        FROM orders
-        WHERE id=${orderId}
-    `);
-    return deleteOrders;
+    const cancelOrders = await weKEADataSource.query(`
+        UPDATE orders
+        SET
+            order_status_id=?
+        WHERE id=?;`,[orderStatusEnum.cancelOrder, orderId]);
+    return cancelOrders;
 };
-
 
 module.exports = {
     getOrders,
     checkPoints,
     MoveCartToOrder,
-    removeOrders
+    checkOrderStatus,
+    cancelOrders
 }

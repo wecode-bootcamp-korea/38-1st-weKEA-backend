@@ -6,6 +6,6 @@ const { loginRequired } = require('../utils/auth');
 
 router.get('', loginRequired, orderController.getOrders);
 router.post('/pay', loginRequired, orderController.addToOrders);
-router.post('/refund', loginRequired, orderController.removeOrders);
+router.post('/refund', loginRequired, orderController.cancelOrders);
 
 module.exports = router;

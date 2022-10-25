@@ -16,11 +16,11 @@ const addToOrders = catchAsync(async(req, res) => {
     res.status(201).json({ message : "Successfully_Ordered" });
 }); 
 
-const removeOrders = catchAsync(async(req, res) => {
+const cancelOrders = catchAsync(async(req, res) => {
     const userId = req.user.id;
     const { orderId, totalPrice } = req.body;
 
-    await orderService.removeOrders(userId, orderId, totalPrice);
+    await orderService.cancelOrders(userId, orderId, totalPrice);
     res.status(200).json({ message : "Successfully_Cancled" });
 })
 
@@ -28,5 +28,5 @@ const removeOrders = catchAsync(async(req, res) => {
 module.exports = {
     getOrders,
     addToOrders,
-    removeOrders
+    cancelOrders
 }
