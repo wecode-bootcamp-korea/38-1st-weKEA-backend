@@ -34,7 +34,7 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
     const user = await userDao.getUserByEmail(email);
     
     if(user) {
-        const error = new Error(`DUPLICATE_ENTRY_${email}_FOR_EMAIL`);
+        const error = new Error(`DUPLICATED_ENTRY_${email}_FOR_EMAIL`);
         error.statusCode = 401;
 
         throw error
