@@ -72,7 +72,7 @@ const signIn = async(email, password) => {
     }
 
     const match = await bcrypt.compare(password, user.password);
-
+    
     if(!match) {
         const error = new Error('WRONG_PASSWORD');
         error.statusCode = 401;
