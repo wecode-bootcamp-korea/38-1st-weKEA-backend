@@ -1,8 +1,8 @@
-const { weKEADataSource } = require('./dataSource');
+const { wekeaDataSource } = require('./dataSource');
 
 const getProductsByCat = async(categoryId, offset, limit, orderingQuery, priceRangeQuery) => {
 
-    const products = await weKEADataSource.query(`
+    const products = await wekeaDataSource.query(`
         SELECT
             o.color AS productColor,
             o.size AS productSize,
