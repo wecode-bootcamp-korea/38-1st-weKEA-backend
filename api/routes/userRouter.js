@@ -6,6 +6,6 @@ const { loginRequired } = require('../utils/auth');
 
 router.post('/signup', userController.signUp);
 router.post('/signin', userController.signIn);
-router.get('/mypage', loginRequired, userController.myPage);
+router.get('/userinfo', loginRequired, userController.myUserInfo);
 
 module.exports = router;
