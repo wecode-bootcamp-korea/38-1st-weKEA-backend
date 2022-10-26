@@ -39,7 +39,7 @@ const addCart = catchAsync(async (req, res) => {
 });
 
 const oneDeleteWishlist = catchAsync(async (req, res) => {
-    const {userId} = req.user.id;
+    const userId = req.user.id;
     const { productId } = req.query;
 
     if(!userId || !productId) {
