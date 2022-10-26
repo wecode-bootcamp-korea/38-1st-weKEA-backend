@@ -15,7 +15,6 @@ const getUserById = async(id) => {
         [id]
     )
     return result[0]
-    
 };
 
 const createUser = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
