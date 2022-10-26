@@ -19,12 +19,13 @@ const categoryService = async(categoryId, offset, limit, minPrice, maxPrice, sor
     };
 
     const priceRange = async(minPrice, maxPrice) => {
-        let priceRange = ` AND o.price>=0`;
 
-        if (minPrice && maxPrice) {
-            priceRange = ` AND (o.price>=${minPrice} AND o.price<${maxPrice})`;
-        }
-        return priceRange;
+        if (!minPrice && !maxPrice) return ` AND o.price>=0`
+
+        if (minPrice===0)           return ` AND (o.price>=0 AND o.price<${maxPrice})`
+
+        return  ` AND (o.price>=${minPrice} AND o.price<${maxPrice})`;
+
     };
 
     const orderingQuery = await ordering(sortBy);
