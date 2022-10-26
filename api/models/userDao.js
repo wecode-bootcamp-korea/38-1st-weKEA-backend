@@ -8,8 +8,8 @@ const getUserById = async(id) => {
             first_name AS firstName,
             birthday,
             phone_number AS phoneNumber,
-            email,
-            point
+            point,
+            email
         FROM users
         WHERE id=?;`,
         [id]
