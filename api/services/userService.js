@@ -78,17 +78,23 @@ const signIn = async(email, password) => {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 
+    return accessToken;
+};
+
+const myUserInfo = async(user) => {
+
     const userInfo = {};
-    userInfo['accessToken'] = accessToken;
     userInfo['userName'] = {};
     userInfo.userName['firstName'] = user.firstName;
     userInfo.userName['lastName'] = user.lastName;
+    userInfo['point'] = user.point;
 
     return userInfo;
-};
+}
 
 module.exports = {
     getUserById,
     signUp,
-    signIn
+    signIn,
+    myUserInfo
 }

@@ -26,8 +26,8 @@ const signIn = async(req, res) => {
             throw error
         }
 
-        const userInfo = await userService.signIn(email, password);
-        res.status(200).json({userInfo});
+        const accessToken = await userService.signIn(email, password);
+        res.status(200).json({accessToken});
 
     } catch (error) {
         console.log(error);
@@ -35,7 +35,15 @@ const signIn = async(req, res) => {
     }
 };
 
+const myUserInfo = catchAsync(async (req, res) => {
+	const user = req.user;
+
+	const userInfo = await userService.myUserInfo(user);
+	res.status(200).json({ data: userInfo });
+});
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    myUserInfo
 }
