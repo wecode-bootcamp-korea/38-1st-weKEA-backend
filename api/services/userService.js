@@ -7,6 +7,8 @@ const getUserById = async(id) => {
     return await userDao.getUserById(id);
 }
 
+console.log(getUserById);
+
 const hashPassword = async(plainPassword) => {
     const saltRounds = 10;
     const salt =await bcrypt.genSalt(saltRounds);
@@ -32,9 +34,10 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
     const user = await userDao.getUserByEmail(email);
     
     if(user) {
-        const error = new Error('ALREADY_SIGNUP');
-        error.statusCode=401;
-        throw error;
+        const error = new Error(`DUPLICATED_ENTRY_${email}_FOR_EMAIL`);
+        error.statusCode = 401;
+
+        throw error
     }
 
     const hashedPassword =  await hashPassword(password);
@@ -48,12 +51,14 @@ const signIn = async(email, password) => {
     if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
         error.statusCode = 400;
+
         throw error
     }
 
     if(!PWREGEX.test(password)) {
         const error = new Error('INVALID_PASSWORD');
         error.statusCode = 400;
+
         throw error
     }
 
@@ -61,16 +66,18 @@ const signIn = async(email, password) => {
     
     if(!user) {
         const error = new Error('WRONG_EMAIL');
-        error.statusCode=401;
-        throw error;
+        error.statusCode = 401;
+
+        throw error
     }
 
     const match = await bcrypt.compare(password, user.password);
     
     if(!match) {
         const error = new Error('WRONG_PASSWORD');
-        error.statusCode=401;
-        throw error;
+        error.statusCode = 401;
+
+        throw error
     }
 
     const accessToken = jwt.sign({id:user.id}, process.env.JWT_SECRET,{
