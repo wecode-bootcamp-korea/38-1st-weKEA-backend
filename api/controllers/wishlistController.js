@@ -1,15 +1,17 @@
 const { wishlistService } = require('../services');
-const { catchAsync }      = require('../utils/error');
+const { catchAsync }  = require('../utils/error');
 
-const addWishlist = catchAsync(async (req, res) => {
-    const { userId, productId, quantity } = req.body;
+const clickWishlist = catchAsync(async (req, res) => {
+    const userId = req.user.id;
+    const { productId } = req.query;
     
-    const addWishlist = await wishlistService.addWishlist(userId, productId, quantity);
-    res.status(200).json({ addWishlist });
+    const clickWishlist = await wishlistService.clickWishlist(userId, productId);
+    const messageName = await wishlistService.messageName(productId);
+    res.status(200).json({ clickWishlist, messageName });
 });
 
 const getWishlist = catchAsync(async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.user.id;
 
     if(!userId) {
         const error = new Error('USER_ID_IS_NOT_VALID');
@@ -22,24 +24,40 @@ const getWishlist = catchAsync(async (req, res) => {
     res.status(200).json({ getWishlist });
 });
 
-const allDeleteWishlist = catchAsync(async (req, res) => {
-    const { userId } = req.body;
+// const wishQuantityChange = catchAsync(async (req, res) => {
+//     const userId = req.user.id;
+//     const { productOptionId, quantity } = req.query;
+
+//     if( !productOptionId || !quantity) {
+//         const error = new Error("quantityPlus Error");
+//         error.statusCode = 400;
+
+//         throw error;
+//     }
+
+//     const wishQuantityChange = await wishlistService.wishQuantityChange(userId, productOptionId, quantity);
+//     res.status(200).json({ wishQuantityChange });
+// });
+
+const replaceWishlist = catchAsync(async (req, res) => {
+    const userId = req.user.id;
 
     if(!userId) {
-        const error = new Error("ALL DELETE ERROR");
+        const error = new Error("replace ERROR");
         error.statusCode = 400;
 
         throw error;
     }
 
-    const allDeleteWishlist = await wishlistService.allDeleteWishlist(userId);
-    res.status(200).json({ allDeleteWishlist });
-})
+    await wishlistService.replaceWishlist(userId);
+    res.status(200)
+});
 
 const oneDeleteWishlist = catchAsync(async (req, res) => {
-    const { userId, productOptionId } = req.body;
+    const userId = req.user.id;
+    const { productId } = req.query;
 
-    if(!userId || !productOptionId) {
+    if(!userId || !productId) {
         const error = new Error("DELETE ERROR");
         error.statusCode = 400;
 
@@ -47,12 +65,14 @@ const oneDeleteWishlist = catchAsync(async (req, res) => {
     }
 
     const oneDeleteWishlist = await wishlistService.oneDeleteWishlist(userId, productId);
-    res.status(200).json({ oneDeleteWishlist });
-})
+    const messageName = await wishlistService.messageName(productId);
+    res.status(200).json({ oneDeleteWishlist, messageName });
+});
 
 module.exports = {
-    addWishlist,
+    clickWishlist,
     getWishlist,
-    allDeleteWishlist,
+    // wishQuantityChange,
+    replaceWishlist,
     oneDeleteWishlist
 }

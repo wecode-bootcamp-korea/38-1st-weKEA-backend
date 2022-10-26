@@ -1,14 +1,14 @@
 const express = require('express');
 const router  = express.Router();
+const { loginRequired } = require('../utils/auth');
+
 
 const { wishlistController } = require('../controllers');
 
-router.post('', wishlistController.addWishlist);
-router.get('', wishlistController.getWishlist);
-router.delete('/deleteall', wishlistController.allDeleteWishlist);
-router.delete('/deleteone', wishlistController.oneDeleteWishlist);
+router.post('',loginRequired, wishlistController.clickWishlist);
+router.get('',loginRequired, wishlistController.getWishlist);
+router.post('/replacewishlist',loginRequired, wishlistController.replaceWishlist);
+router.delete('/deleteone',loginRequired, wishlistController.oneDeleteWishlist);
 
 
-module.exports = {
-    wishlistController
-}
+module.exports = router;

@@ -11,7 +11,7 @@ const loginRequired = async(req, res, next) => {
         return res.status(err.statusCode).json({message: error.message});
     }
 
-    const decoded = promisify(jwt.verify)(accessToken, process.env.JWT_SECRET);
+    const decoded = await promisify(jwt.verify)(accessToken, process.env.JWT_SECRET);
 
     const user = await userService.getUserById(decoded.id);
 
