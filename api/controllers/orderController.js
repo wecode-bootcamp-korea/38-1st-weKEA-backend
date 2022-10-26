@@ -21,7 +21,7 @@ const cancelOrders = catchAsync(async(req, res) => {
     const { orderId, totalPrice } = req.body;
 
     await orderService.cancelOrders(userId, orderId, totalPrice);
-    res.status(200).json({ message : "Successfully_Cancled" });
+    res.status(200).json({ message : "Successfully_Canceled" });
 })
 
 

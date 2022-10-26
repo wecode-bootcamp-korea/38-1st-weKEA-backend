@@ -1,7 +1,7 @@
 const { wekeaDataSource } = require('./dataSource');
 const { orderStatusEnum } = require('./enums');
 
-const getOrders = async(id) => {
+const getOrders = async(userId) => {
     const getOrders = await wekeaDataSource.query(`
         SELECT
             products.name AS name,
@@ -15,55 +15,67 @@ const getOrders = async(id) => {
         LEFT JOIN order_status os ON o.order_status_id=os.id
         INNER JOIN product_options ON o.product_option_id=product_options.id
         INNER JOIN products ON products.id=product_options.product_id
-        WHERE o.user_id=?;`,[id]
+        WHERE o.user_id=?;`,[userId]
     );
     return getOrders;
 };
 
-const checkPoints = async(id) => {
+const checkPoints = async(userId) => {
     const getPoints = await wekeaDataSource.query(`
         SELECT
             point
         FROM users
-        WHERE id=?;`,[id]
+        WHERE id=?;`,[userId]
     );
     return getPoints[0].point;
 };
 
-const MoveCartToOrder = async(id, totalPrice) => {
-    await wekeaDataSource.query(`
-        UPDATE users 
-        SET
-            point=point-?
-        WHERE id=?;`,[totalPrice, id]
-    );
+const MoveCartToOrder = async(userId, totalPrice) => {
 
-    const userCarts = await wekeaDataSource.query(`
-        SELECT
-            product_option_id,
-            quantity
-        FROM carts
-        WHERE user_id=?;`,[id]
-    );
+    const queryRunner = wekeaDataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
 
-    for(var i=0; i<userCarts.length; i++){
-        await wekeaDataSource.query(`
-            INSERT INTO orders(
-                user_id,
-                product_option_id,
-                quantity,
-                order_status_id
-            ) VALUES (?,?,?,?);`
-            ,[id, userCarts[i].product_option_id, userCarts[i].quantity, orderStatusEnum.addOrder]
+    try{
+        await queryRunner.query(`
+            UPDATE users 
+            SET
+                point=point-?
+            WHERE id=?;`,[totalPrice, userId]
         );
-    } 
     
-    const deleteCarts = await wekeaDataSource.query(`
-        DELETE
-        FROM carts
-        WHERE user_id=?;`,[id]
-    );
-    return deleteCarts;
+        const userCarts = await queryRunner.query(`
+            SELECT
+                product_option_id,
+                quantity
+            FROM carts
+            WHERE user_id=?;`,[userId]
+        );
+    
+        for(var baseNumber=0; baseNumber<userCarts.length; baseNumber++){
+            await queryRunner.query(`
+                INSERT INTO orders(
+                    user_id,
+                    product_option_id,
+                    quantity,
+                    order_status_id
+                ) VALUES (?,?,?,?);`
+                ,[userId, userCarts[baseNumber].product_option_id, userCarts[baseNumber].quantity, orderStatusEnum.ADDED]
+            );
+        } 
+        
+        const deleteCarts = await queryRunner.query(`
+            DELETE
+            FROM carts
+            WHERE user_id=?;`,[userId]
+        );
+        await queryRunner.commitTransaction();
+        return deleteCarts;
+    } catch (err) {
+        await queryRunner.rollbackTransaction();
+    } finally {
+        await queryRunner.release();
+    }
 };
 
 const checkOrderStatus = async(orderId) => {
@@ -78,18 +90,30 @@ const checkOrderStatus = async(orderId) => {
 };
 
 const cancelOrders = async(userId, orderId, totalPrice) => {
-    await wekeaDataSource.query(`
-        UPDATE users 
-        SET
-            point=point+?
-        WHERE id=?;`,[totalPrice, userId]);
 
-    const cancelOrders = await wekeaDataSource.query(`
-        UPDATE orders
-        SET
-            order_status_id=?
-        WHERE id=?;`,[orderStatusEnum.cancelOrder, orderId]);
-    return cancelOrders;
+    const queryRunner = wekeaDataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+    try{
+        await queryRunner.query(`
+            UPDATE users 
+            SET
+                point=point+?
+            WHERE id=?;`,[totalPrice, userId]);
+    
+        const cancelOrders = await queryRunner.query(`
+            UPDATE orders
+            SET
+                order_status_id=?
+            WHERE id=?;`,[orderStatusEnum.CANCELED, orderId]);
+        await queryRunner.commitTransaction();
+        return cancelOrders;
+    } catch (err) {
+        await queryRunner.rollbackTransaction();
+    } finally {
+        await queryRunner.release();
+    }
 };
 
 module.exports = {

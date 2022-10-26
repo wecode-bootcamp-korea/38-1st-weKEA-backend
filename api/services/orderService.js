@@ -1,4 +1,3 @@
-const { TreeRepositoryUtils } = require('typeorm');
 const { orderDao, enums } = require('../models');
 
 const getOrders = async(userId) => {
@@ -28,7 +27,7 @@ const addToOrders = async(userId, totalPrice) => {
 const cancelOrders = async(userId, orderId, totalPrice) => {
     const orderStatus = await orderDao.checkOrderStatus(orderId);
     
-    if(orderStatus==enums.orderStatusEnum.cancelOrder){
+    if(orderStatus==enums.orderStatusEnum.CANCELED){
         const error = new Error('Already_canceled');
         error.statusCode = 400;
 
