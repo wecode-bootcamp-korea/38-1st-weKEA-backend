@@ -6,7 +6,7 @@ const { wishlistController } = require('../controllers');
 
 router.post('',loginRequired, wishlistController.clickWishlist);
 router.get('',loginRequired, wishlistController.getWishlist);
-router.post('/addcart',loginRequired, wishlistController.addCart);
-router.delete('/deleteone',loginRequired, wishlistController.oneDeleteWishlist);
+router.post('/addition',loginRequired, wishlistController.addCart);
+router.delete('/one',loginRequired, wishlistController.oneDeleteWishlist);
 
 module.exports = router;
