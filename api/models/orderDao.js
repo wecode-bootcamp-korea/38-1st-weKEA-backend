@@ -30,7 +30,17 @@ const checkPoints = async(userId) => {
     return getPoints[0].point;
 };
 
-const MoveCartToOrder = async(userId, totalPrice) => {
+const userCarts = async(userId) => {
+    return await wekeaDataSource.query(`
+        SELECT
+            product_option_id,
+            quantity
+        FROM carts
+        WHERE user_id=?;`,[userId]
+    );
+}
+
+const MoveCartToOrder = async(userId, totalPrice, userCarts) => {
 
     const queryRunner = wekeaDataSource.createQueryRunner();
         await queryRunner.connect();
@@ -42,14 +52,6 @@ const MoveCartToOrder = async(userId, totalPrice) => {
             SET
                 point=point-?
             WHERE id=?;`,[totalPrice, userId]
-        );
-    
-        const userCarts = await queryRunner.query(`
-            SELECT
-                product_option_id,
-                quantity
-            FROM carts
-            WHERE user_id=?;`,[userId]
         );
     
         for(var baseNumber=0; baseNumber<userCarts.length; baseNumber++){
@@ -119,6 +121,7 @@ const cancelOrders = async(userId, orderId, totalPrice) => {
 module.exports = {
     getOrders,
     checkPoints,
+    userCarts,
     MoveCartToOrder,
     checkOrderStatus,
     cancelOrders

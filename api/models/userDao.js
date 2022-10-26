@@ -15,7 +15,6 @@ const getUserById = async(id) => {
         [id]
     )
     return result[0]
-    
 };
 
 const createUser = async(lastName, firstName, birthday, phoneNumber, point, email, password) => {
@@ -41,6 +40,7 @@ const getUserByEmail = async(email) => {
             id,
             last_name AS lastName,
             first_name AS firstName,
+            point,
             password
         FROM users
         WHERE email=?;`,

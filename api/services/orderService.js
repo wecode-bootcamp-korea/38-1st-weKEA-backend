@@ -14,6 +14,7 @@ const getOrders = async(userId) => {
 
 const addToOrders = async(userId, totalPrice) => {
     const userPoint = await orderDao.checkPoints(userId);
+    const userCarts = await orderDao.userCarts(userId);
 
     if(userPoint<totalPrice||totalPrice<0){
         const error = new Error('Not_Enough_Points');
@@ -21,7 +22,13 @@ const addToOrders = async(userId, totalPrice) => {
 
         throw error;
     };
-    return orderDao.MoveCartToOrder(userId, totalPrice);
+    if(userCarts.length==0){
+        const error = new Error('Order_Nothing');
+        error.statusCode = 400;
+
+        throw error;
+    };
+    return orderDao.MoveCartToOrder(userId, totalPrice, userCarts);
 };
 
 const cancelOrders = async(userId, orderId, totalPrice) => {
