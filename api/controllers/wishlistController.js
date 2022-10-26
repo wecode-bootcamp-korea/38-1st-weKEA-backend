@@ -24,37 +24,22 @@ const getWishlist = catchAsync(async (req, res) => {
     res.status(200).json({ getWishlist });
 });
 
-// const wishQuantityChange = catchAsync(async (req, res) => {
-//     const userId = req.user.id;
-//     const { productOptionId, quantity } = req.query;
-
-//     if( !productOptionId || !quantity) {
-//         const error = new Error("quantityPlus Error");
-//         error.statusCode = 400;
-
-//         throw error;
-//     }
-
-//     const wishQuantityChange = await wishlistService.wishQuantityChange(userId, productOptionId, quantity);
-//     res.status(200).json({ wishQuantityChange });
-// });
-
-const replaceWishlist = catchAsync(async (req, res) => {
+const addCart = catchAsync(async (req, res) => {
     const userId = req.user.id;
+    const { productId, quantity } = req.query;
 
     if(!userId) {
         const error = new Error("replace ERROR");
         error.statusCode = 400;
-
         throw error;
     }
 
-    await wishlistService.replaceWishlist(userId);
-    res.status(200)
+    const app = await wishlistService.addCart(userId, productId, quantity);
+    res.status(200).json({"message":"success" , "data" : app})
 });
 
 const oneDeleteWishlist = catchAsync(async (req, res) => {
-    const userId = req.user.id;
+    const {userId} = req.user.id;
     const { productId } = req.query;
 
     if(!userId || !productId) {
@@ -72,7 +57,6 @@ const oneDeleteWishlist = catchAsync(async (req, res) => {
 module.exports = {
     clickWishlist,
     getWishlist,
-    // wishQuantityChange,
-    replaceWishlist,
+    addCart,
     oneDeleteWishlist
 }

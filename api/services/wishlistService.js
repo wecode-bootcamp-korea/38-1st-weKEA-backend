@@ -15,9 +15,11 @@ const getWishlist = async(userId) => {
     return await wishlistDao.getWishlist(userId);
 };
 
-const replaceWishlist = async(userId) => {
-    await wishlistDao.addCart(userId)
-    await wishlistDao.allDeleteWishlist(userId);
+const addCart = async(userId, productId, quantity) => {
+
+    let optionId = await wishlistDao.optionId(productId)
+
+    return wishlistDao.addCart(userId, optionId, quantity)
 }
 
 const oneDeleteWishlist = async(userId, productId) => {
@@ -31,7 +33,7 @@ const messageName = async(productId) => {
 module.exports = {
     clickWishlist,
     getWishlist,
-    replaceWishlist,
+    addCart,
     oneDeleteWishlist,
     messageName
 }

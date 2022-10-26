@@ -19,18 +19,11 @@ const findWishlistId = async(userId, productId) => {
     `) 
 }
 
-// const updateWishlist = async(findWishlistId, quantity) => {
-//     return await weKEADataSource.query(`
-//         UPDATE wishlists
-//         SET quantity=${quantity}
-//         WHERE id=${findWishlistId};
-//     `)
-// };
-
 const getWishlist = async (userId) => {
     const result = await weKEADataSource.query(`
         SELECT
-            w.id,
+            o.id,
+            w.product_id,
             o.size,
             o.price,
             o.color,
@@ -45,15 +38,24 @@ const getWishlist = async (userId) => {
     `)
     return result;
 }
-const addCart = async(userId, productId) => {
-    await weKEADataSource.query(`
+
+const optionId = async(productId) => {
+    const options = await weKEADataSource.query(`
+        SELECT id
+            FROM product_options o
+            WHERE o.product_id = ${productId}`);
+
+    return options[0].id;
+}
+
+const addCart = async(userId, productId, quantity) => {
+    return weKEADataSource.query(`
         INSERT INTO carts(
             user_id,
-            product_option_id
-        ) VALUES (?, ?)
-        WHERE carts.user_id = wishlists.user_id `,
-        [userId, productId]
-        )
+            product_option_id,
+            quantity
+        ) VALUES (${userId}, ${productId}, ${quantity})
+        `)
 }
 
 const allDeleteWishlist = async(userId) => {
@@ -83,9 +85,9 @@ const messageName = async (productId) => {
 module.exports = {
     addWishlist,
     findWishlistId,
-    // updateWishlist,
     getWishlist,
     addCart,
+    optionId,
     allDeleteWishlist,
     oneDeleteWishlist,
     messageName
