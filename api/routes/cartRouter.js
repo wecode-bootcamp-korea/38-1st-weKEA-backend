@@ -7,7 +7,7 @@ const { cartController } = require('../controllers');
 router.post('',loginRequired, cartController.addCart);
 router.get('',loginRequired, cartController.getCart);
 router.patch('/plusquantity', loginRequired, cartController.cartQuantityChange);
-router.delete('/deleteall',loginRequired, cartController.allDeleteCart);
-router.delete('/deleteone',loginRequired, cartController.oneDeleteCart);
+router.delete('/all',loginRequired, cartController.allDeleteCart);
+router.delete('/one',loginRequired, cartController.oneDeleteCart);
 
 module.exports = router;
