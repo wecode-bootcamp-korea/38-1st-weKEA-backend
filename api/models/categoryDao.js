@@ -30,7 +30,7 @@ const getProductsByCat = async(categoryId, offset, limit, orderingQuery, priceRa
         WHERE p.category_id=? ${priceRangeQuery}
         ${orderingQuery}
         LIMIT ?, ?;`,
-        [Number(categoryId),Number(offset), Number(limit)]
+        [categoryId, offset, limit]
     );
 
     return products;
