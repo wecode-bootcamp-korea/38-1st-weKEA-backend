@@ -32,11 +32,8 @@ const categoryInfo = catchAsync(async(req, res) => {
     minPrice = +minPrice;
     maxPrice = +maxPrice;
 
-    console.log(categoryId, offset, limit, minPrice, maxPrice, "모음집")
-
     const getProductsByCategoryId = await categoryService.categoryService(categoryId, offset, limit, minPrice, maxPrice, sortBy);
     res.status(200).json({getProductsByCategoryId});
-    
 });
 
 module.exports = {
