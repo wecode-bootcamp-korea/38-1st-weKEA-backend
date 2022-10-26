@@ -16,9 +16,8 @@ const getWishlist = async(userId) => {
 };
 
 const addCart = async(userId, productId, quantity) => {
-
     let optionId = await wishlistDao.optionId(productId)
-
+    
     return wishlistDao.addCart(userId, optionId, quantity)
 }
 
