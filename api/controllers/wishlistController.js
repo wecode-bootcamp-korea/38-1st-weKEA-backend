@@ -1,13 +1,13 @@
 const { wishlistService } = require('../services');
 const { catchAsync }  = require('../utils/error');
 
-const clickWishlist = catchAsync(async (req, res) => {
+const addWishlist = catchAsync(async (req, res) => {
     const userId = req.user.id;
     const { productId } = req.query;
     
-    const clickWishlist = await wishlistService.clickWishlist(userId, productId);
+    const addWishlist = await wishlistService.addWishlist(userId, productId);
     const messageName = await wishlistService.messageName(productId);
-    res.status(200).json({ clickWishlist, messageName });
+    res.status(200).json({ addWishlist, messageName });
 });
 
 const getWishlist = catchAsync(async (req, res) => {
@@ -55,7 +55,7 @@ const oneDeleteWishlist = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-    clickWishlist,
+    addWishlist,
     getWishlist,
     addCart,
     oneDeleteWishlist

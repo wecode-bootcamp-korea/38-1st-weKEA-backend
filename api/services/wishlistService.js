@@ -1,6 +1,6 @@
 const { wishlistDao } = require('../models');
 
-const clickWishlist = async(userId, productId) => {
+const addWishlist = async(userId, productId) => {
     const findWishlistId = await wishlistDao.findWishlistId(userId, productId);
 
     if(findWishlistId.length==0){
@@ -30,7 +30,7 @@ const messageName = async(productId) => {
 }
 
 module.exports = {
-    clickWishlist,
+    addWishlist,
     getWishlist,
     addCart,
     oneDeleteWishlist,
