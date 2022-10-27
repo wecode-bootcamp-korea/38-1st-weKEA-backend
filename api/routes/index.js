@@ -8,10 +8,9 @@ const productRouter = require('./productRouter');
 const orderRouter = require('./orderRouter');
 
 router.use('/users', userRouter);
-router.use('/carts', cartRouter);
-router.use('/users', userRouter);
-router.use('/categories', categoryRouter);
 router.use('/products', productRouter);
+router.use('/carts', cartRouter);
+router.use('/categories', categoryRouter);
 router.use('/order', orderRouter);
 
 module.exports = router;

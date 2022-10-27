@@ -1,5 +1,52 @@
 const { wekeaDataSource } = require('./dataSource');
 
+    const getRandomProducts = async () => {
+            const products = await wekeaDataSource.query(`
+                SELECT 
+                    products.name,
+                    products.thumbnail,
+                    products.description,
+                    categories.name,
+                    images,
+                    product_options
+                FROM products
+                LEFT JOIN categories on products.category_id=categories.id
+                LEFT JOIN (
+                    SELECT
+                        product_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            "id", id,
+                            "url", image_url
+                        )
+                    ) as images
+                    FROM
+                        images
+                    GROUP BY product_id
+                ) images ON products.id=images.product_id
+                LEFT JOIN (
+                    SELECT 
+                        product_id,
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            "size", size,
+                            "price", price,
+                            "color", color
+                        )
+                    ) as product_options
+                    FROM
+                        product_options
+                    GROUP BY product_id
+                ) product_options ON products.id=product_options.product_id
+                GROUP BY products.id
+                ORDER BY RAND()
+                LIMIT 0,4;
+                `
+            )   
+        return products;
+    }
+
+
 const getProductDetailById = async(id) => {
     const products = await wekeaDataSource.query(`
       SELECT
@@ -46,5 +93,6 @@ const getProductDetailById = async(id) => {
 };
 
 module.exports = {
-  getProductDetailById
+    getRandomProducts,
+    getProductDetailById
 }
