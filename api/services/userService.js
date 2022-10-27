@@ -65,9 +65,8 @@ const signIn = async(email, password) => {
     const user = await userDao.getUserByEmail(email);
     
     if(!user) {
-        const error = new Error('WRONG_EMAIL');
-        error.statusCode = 401;
-
+        const error = new Error('WRONG_EMAIL')
+        error.statusCode=401;
         throw error
     }
 

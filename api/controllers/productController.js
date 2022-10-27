@@ -1,5 +1,11 @@
-const { productService } = require('../services')
-const { catchAsync } = require('../utils/error');
+const { productService } = require('../services');
+const { catchAsync }  = require('../utils/error');
+
+const getRandomProducts = catchAsync(async (req, res) => {
+    const products = await productService.getRandomProducts();
+
+    res.status(200).json({ data : products });
+});
 
 const getProductDetailById = catchAsync(async(req, res) => {
      const id = req.params.id;
@@ -15,5 +21,6 @@ const getProductDetailById = catchAsync(async(req, res) => {
 });
 
 module.exports = {
+     getRandomProducts,
      getProductDetailById
 }

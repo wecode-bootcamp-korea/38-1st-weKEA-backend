@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const { productDao } = require('../models');
+
+const getRandomProducts = async () => {
+    return await productDao.getRandomProducts();
+};
 
 const getProductDetailById = async(id) => {
      const product = await productDao.getProductDetailById(id);
@@ -9,5 +12,6 @@ const getProductDetailById = async(id) => {
 };
 
 module.exports = {
+    getRandomProducts,
     getProductDetailById
 }
