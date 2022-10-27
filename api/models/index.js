@@ -1,15 +1,17 @@
 const dataSource = require('./dataSource');
 const enums = require('./enums')
 const userDao = require('./userDao');
-const productDao = require('./productDao');
+const cartDao = require('./cartDao');
 const categoryDao = require('./categoryDao');
+const productDao = require('./productDao');
 const orderDao = require('./orderDao');
 
 module.exports = {
     dataSource,
     userDao,
-    productDao,
+    cartDao,
     categoryDao,
+    productDao,
     orderDao,
     enums
 }
