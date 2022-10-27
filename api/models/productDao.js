@@ -1,17 +1,7 @@
 const { wekeaDataSource } = require('./dataSource');
 
     const getRandomProducts = async () => {
-        const id = [];
-        let count = 4;
-        
-        while(count>0){
-           id.push(Math.floor(Math.random() * 50)+1);
-           count--;
-        };
-
-        const result =[];
-        for(let i=0;i<id.length;i++){
-            var products = await wekeaDataSource.query(`
+            const products = await wekeaDataSource.query(`
                 SELECT 
                     products.name,
                     products.thumbnail,
@@ -48,13 +38,12 @@ const { wekeaDataSource } = require('./dataSource');
                         product_options
                     GROUP BY product_id
                 ) product_options ON products.id=product_options.product_id
-                WHERE products.id=${id[i]}
-                GROUP BY products.id;`
+                GROUP BY products.id
+                ORDER BY RAND()
+                LIMIT 0,4;
+                `
             )   
-            result.push(products);
-
-        }
-        return result;
+        return products;
     }
 
 
