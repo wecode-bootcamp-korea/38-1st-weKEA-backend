@@ -7,6 +7,8 @@ const getUserById = async(id) => {
     return await userDao.getUserById(id);
 }
 
+console.log(getUserById);
+
 const hashPassword = async(plainPassword) => {
     const saltRounds = 10;
     const salt =await bcrypt.genSalt(saltRounds);
@@ -29,6 +31,15 @@ const signUp = async(lastName, firstName, birthday, phoneNumber, point, email, p
         throw error
     }
 
+    const user = await userDao.getUserByEmail(email);
+    
+    if(user) {
+        const error = new Error(`DUPLICATED_ENTRY_${email}_FOR_EMAIL`);
+        error.statusCode = 401;
+
+        throw error
+    }
+
     const hashedPassword =  await hashPassword(password);
     return await userDao.createUser(lastName, firstName, birthday, phoneNumber, point, email, hashedPassword);
 }
@@ -40,25 +51,33 @@ const signIn = async(email, password) => {
     if(!EMAILREGEX.test(email)) {
         const error = new Error('INVALID_EMAIL');
         error.statusCode = 400;
+
         throw error
     }
 
     if(!PWREGEX.test(password)) {
         const error = new Error('INVALID_PASSWORD');
         error.statusCode = 400;
+
         throw error
     }
 
     const user = await userDao.getUserByEmail(email);
     
     if(!user) {
-        const error = new Error('WRONG_EMAIL')
+        const error = new Error('WRONG_EMAIL');
+        error.statusCode = 401;
+
+        throw error
     }
 
     const match = await bcrypt.compare(password, user.password);
-
+    
     if(!match) {
-        const error = new Error('WRONG_PASSWORD')
+        const error = new Error('WRONG_PASSWORD');
+        error.statusCode = 401;
+
+        throw error
     }
 
     const accessToken = jwt.sign({id:user.id}, process.env.JWT_SECRET,{
@@ -66,17 +85,23 @@ const signIn = async(email, password) => {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 
+    return accessToken;
+};
+
+const myUserInfo = async(user) => {
+
     const userInfo = {};
-    userInfo['accessToken'] = accessToken;
     userInfo['userName'] = {};
     userInfo.userName['firstName'] = user.firstName;
     userInfo.userName['lastName'] = user.lastName;
+    userInfo['point'] = user.point;
 
     return userInfo;
-};
+}
 
 module.exports = {
     getUserById,
     signUp,
-    signIn
+    signIn,
+    myUserInfo
 }

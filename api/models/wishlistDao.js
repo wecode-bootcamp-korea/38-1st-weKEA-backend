@@ -1,7 +1,7 @@
-const { weKEADataSource } = require('./dataSource');
+const { wekeaDataSource } = require('./dataSource');
 
 const addWishlist = async (userId, productId) => {
-    const addWishlist = await weKEADataSource.query(`
+    const addWishlist = await wekeaDataSource.query(`
         INSERT INTO wishlists(
             user_id,
             product_id
@@ -11,7 +11,7 @@ const addWishlist = async (userId, productId) => {
 };
 
 const findWishlistId = async(userId, productId) => {
-    return await weKEADataSource.query(`
+    return await wekeaDataSource.query(`
         SELECT 
             id
         FROM wishlists
@@ -20,7 +20,7 @@ const findWishlistId = async(userId, productId) => {
 }
 
 const getWishlist = async (userId) => {
-    const result = await weKEADataSource.query(`
+    const result = await wekeaDataSource.query(`
         SELECT
             o.id,
             w.product_id,
@@ -40,7 +40,7 @@ const getWishlist = async (userId) => {
 }
 
 const optionId = async(productId) => {
-    const options = await weKEADataSource.query(`
+    const options = await wekeaDataSource.query(`
         SELECT id
             FROM product_options o
             WHERE o.product_id = ${productId}`);
@@ -49,7 +49,7 @@ const optionId = async(productId) => {
 }
 
 const addCart = async(userId, productId, quantity) => {
-    return weKEADataSource.query(`
+    return wekeaDataSource.query(`
         INSERT INTO carts(
             user_id,
             product_option_id,
@@ -59,7 +59,7 @@ const addCart = async(userId, productId, quantity) => {
 }
 
 const allDeleteWishlist = async(userId) => {
-    const allDeleteWishlist = await weKEADataSource.query(`
+    const allDeleteWishlist = await wekeaDataSource.query(`
         DELETE FROM wishlists w
         WHERE w.user_id = ${userId}
     `);
@@ -67,7 +67,7 @@ const allDeleteWishlist = async(userId) => {
 }
 
 const oneDeleteWishlist = async (userId, productId) => {
-    const oneDeleteWishlist = await weKEADataSource.query(`
+    const oneDeleteWishlist = await wekeaDataSource.query(`
         DELETE FROM wishlists w
         WHERE w.user_id=${userId} AND w.product_id=${productId}
     `)
@@ -75,7 +75,7 @@ const oneDeleteWishlist = async (userId, productId) => {
 };
 
 const messageName = async (productId) => {
-    return await weKEADataSource.query(`
+    return await wekeaDataSource.query(`
         SELECT name
         FROM products
         WHERE id=${productId}
