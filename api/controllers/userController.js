@@ -3,8 +3,8 @@ const { catchAsync } = require('../utils/error');
 
 const signUp = catchAsync(async(req, res) => {
     const DEFAULT_POINT = 1000000;
-    const { last_name, first_name, birthday, phone_number, email, password } = req.body;
-    if(!last_name||!first_name||!birthday||!phone_number||!email||!password) {
+    const { lastName, firstName, birthday, phoneNumber, email, password } = req.body;
+    if(!lastName||!firstName||!birthday||!phoneNumber||!email||!password) {
         const error = new Error('KEY_ERROR');
         error.statusCode = 400;
 
