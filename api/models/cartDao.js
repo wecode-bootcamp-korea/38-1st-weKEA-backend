@@ -38,6 +38,8 @@ const getCart = async (userId) => {
             o.size,
             o.price,
             o.color,
+            o.id AS optionId,
+            p.id AS productId,
             p.name,
             p.thumbnail,
             p.description
