@@ -71,7 +71,6 @@ const oneDeleteWishlist = async (userId, productId) => {
         DELETE FROM wishlists w
         WHERE w.user_id=${userId} AND w.product_id=${productId}
     `)
-    console.log(userId, productId)
     return oneDeleteWishlist;
 };
 
