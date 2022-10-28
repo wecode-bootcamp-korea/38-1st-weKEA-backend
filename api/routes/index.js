@@ -11,7 +11,7 @@ const orderRouter = require('./orderRouter');
 router.use('/users', userRouter);
 router.use('/wishlist', wishlistRouter);
 router.use('/carts', cartRouter);
-router.use('/categories', categoryRouter);
+router.use('/products/categories', categoryRouter);
 router.use('/products', productRouter);
 router.use('/order', orderRouter);
 
