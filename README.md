@@ -12,8 +12,8 @@
 - 개발기간 : 2022/10/17 ~ 2022/10/27
 
 - 개발 인원
-<br> Front-End : 김도영, 김솔(PM), 양동선
-<br> Back-End : 김희연, 이찬우, 정해만
+- Front-End : [김도영](https://github.com/doyoungkim1994), [김솔(PM)](https://github.com/Solrasido55), [양동선](https://github.com/yangseon3)
+- Back-End : [김희연](https://github.com/Cein1), [이찬우](https://github.com/c0zyb1ue), [정해만](https://github.com/haemong)
 <br>
 
 # 적용 기술
