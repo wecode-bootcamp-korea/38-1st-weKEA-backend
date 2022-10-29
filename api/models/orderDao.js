@@ -53,8 +53,9 @@ const MoveCartToOrder = async(userId, totalPrice, userCarts) => {
                 point=point-?
             WHERE id=?;`,[totalPrice, userId]
         );
-    
+
         for(var baseNumber=0; baseNumber<userCarts.length; baseNumber++){
+            console.log(baseNumber)
             await queryRunner.query(`
                 INSERT INTO orders(
                     user_id,

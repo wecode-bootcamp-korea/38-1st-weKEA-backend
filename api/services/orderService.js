@@ -2,20 +2,15 @@ const { orderDao, enums } = require('../models');
 
 const getOrders = async(userId) => {
     const userOrders = await orderDao.getOrders(userId);
-    
-    if(!userOrders[0]){
-        const error = new Error('Ordered_Nothing');
-        error.statusCode = 400;
 
-        throw error;
-    }
     return userOrders;
 };
 
 const addToOrders = async(userId, totalPrice) => {
     const userPoint = await orderDao.checkPoints(userId);
     const userCarts = await orderDao.userCarts(userId);
-
+    console.log(userCarts)
+    
     if(userPoint<totalPrice||totalPrice<0){
         const error = new Error('Not_Enough_Points');
         error.statusCode = 400;
@@ -28,7 +23,7 @@ const addToOrders = async(userId, totalPrice) => {
 
         throw error;
     };
-    return orderDao.MoveCartToOrder(userId, totalPrice, userCarts);
+    return await orderDao.MoveCartToOrder(userId, totalPrice, userCarts);
 };
 
 const cancelOrders = async(userId, orderId, totalPrice) => {
